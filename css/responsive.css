@@ -19,6 +19,27 @@
     padding: var(--space-3xl) 0;
   }
 
+  /* Top bar & Branding */
+  .top-contact-bar {
+    font-size: 0.75rem;
+  }
+
+  .branding-bar {
+    display: none;
+  }
+
+  .logo.logo--mobile-only {
+    display: flex;
+  }
+
+  .nav__cta {
+    display: block;
+  }
+
+  .header__inner {
+    justify-content: space-between;
+  }
+
   /* Nav */
   .nav-toggle {
     display: flex;
@@ -30,6 +51,11 @@
 
   .logo__name {
     font-size: 0.9rem;
+    color: var(--white);
+  }
+
+  .logo__tagline {
+    color: rgba(255, 255, 255, 0.6);
   }
 
   .nav {
@@ -67,6 +93,12 @@
     padding: var(--space-md) 0;
     justify-content: space-between;
     width: 100%;
+    color: var(--text);
+  }
+
+  .nav__link:hover,
+  .nav__link--active {
+    color: var(--accent);
   }
 
   .dropdown {
@@ -116,8 +148,8 @@
     display: block;
   }
 
-  /* Top bar */
-  .top-bar {
+  /* Top contact bar hide on small mobile */
+  .top-contact-bar {
     display: none;
   }
 
