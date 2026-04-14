@@ -376,6 +376,7 @@ p:last-child {
 .page-header {
   background: var(--primary);
   padding: var(--space-3xl) 0 var(--space-2xl);
+  padding-top: calc(var(--nav-height) + var(--space-3xl));
   position: relative;
   overflow: hidden;
 }

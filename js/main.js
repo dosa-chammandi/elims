@@ -66,6 +66,11 @@ function initHeaderScroll() {
   const header = document.getElementById('header');
   if (!header) return;
 
+  // Only toggle transparent/scrolled on homepage (has carousel)
+  // Inner pages always keep header--scrolled set in HTML
+  const heroCarousel = document.getElementById('heroCarousel');
+  if (!heroCarousel) return;
+
   const SCROLL_THRESHOLD = 80;
 
   function updateHeader() {
@@ -74,10 +79,7 @@ function initHeaderScroll() {
       header.classList.remove('header--transparent');
     } else {
       header.classList.remove('header--scrolled');
-      // Only add transparent class on homepage (has carousel)
-      if (document.getElementById('heroCarousel')) {
-        header.classList.add('header--transparent');
-      }
+      header.classList.add('header--transparent');
     }
   }
 
