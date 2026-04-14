@@ -1,14 +1,15 @@
 /* ============================================
-   ELIMS College of Pharmacy — Main JavaScript
+   ELIMS College of Pharmacy — Main JavaScript v2
+   Immersive Redesign
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavigation();
-  initScrollAnimations();
   initHeaderScroll();
-  if (document.getElementById('lightbox')) {
-    initLightbox();
-  }
+  initScrollAnimations();
+  initCarousel();
+  initCounters();
+  initLightbox();
 });
 
 /* --- Mobile Navigation --- */
@@ -44,12 +45,10 @@ function initNavigation() {
 
     link.addEventListener('click', (e) => {
       if (window.innerWidth <= 1024) {
-        // Only prevent default if this is a dropdown trigger (has arrow)
         const arrow = link.querySelector('.arrow');
         if (arrow) {
           e.preventDefault();
           dropdown.classList.toggle('open');
-          // Close other dropdowns
           dropdownParents.forEach(other => {
             if (other !== item) {
               const otherDropdown = other.querySelector('.dropdown');
@@ -62,27 +61,31 @@ function initNavigation() {
   });
 }
 
-/* --- Header Scroll Effect --- */
+/* --- Header Scroll Effect (Transparent → Solid) --- */
 function initHeaderScroll() {
   const header = document.getElementById('header');
   if (!header) return;
 
-  let lastScroll = 0;
+  const SCROLL_THRESHOLD = 80;
 
-  window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-
-    if (currentScroll > 50) {
-      header.style.boxShadow = '0 4px 20px rgba(27, 42, 74, 0.1)';
+  function updateHeader() {
+    if (window.pageYOffset > SCROLL_THRESHOLD) {
+      header.classList.add('header--scrolled');
+      header.classList.remove('header--transparent');
     } else {
-      header.style.boxShadow = '0 2px 20px rgba(27, 42, 74, 0.08)';
+      header.classList.remove('header--scrolled');
+      // Only add transparent class on homepage (has carousel)
+      if (document.getElementById('heroCarousel')) {
+        header.classList.add('header--transparent');
+      }
     }
+  }
 
-    lastScroll = currentScroll;
-  }, { passive: true });
+  updateHeader();
+  window.addEventListener('scroll', updateHeader, { passive: true });
 }
 
-/* --- Scroll Animations (lightweight AOS replacement) --- */
+/* --- Scroll Animations (lightweight AOS) --- */
 function initScrollAnimations() {
   const elements = document.querySelectorAll('[data-aos]');
   if (!elements.length) return;
@@ -102,6 +105,144 @@ function initScrollAnimations() {
   elements.forEach(el => observer.observe(el));
 }
 
+/* --- Full-Screen Hero Carousel --- */
+function initCarousel() {
+  const carousel = document.getElementById('heroCarousel');
+  if (!carousel) return;
+
+  const slides = carousel.querySelectorAll('.carousel__slide');
+  const dots = carousel.querySelectorAll('.carousel__dot');
+  const prevBtn = carousel.querySelector('.carousel__arrow--prev');
+  const nextBtn = carousel.querySelector('.carousel__arrow--next');
+
+  if (slides.length === 0) return;
+
+  let currentIndex = 0;
+  let autoPlayInterval;
+  const AUTO_PLAY_DELAY = 6000;
+
+  function goToSlide(index) {
+    // Wrap around
+    if (index < 0) index = slides.length - 1;
+    if (index >= slides.length) index = 0;
+
+    // Remove active from current
+    slides[currentIndex].classList.remove('carousel__slide--active');
+    if (dots[currentIndex]) dots[currentIndex].classList.remove('carousel__dot--active');
+
+    // Set new active
+    currentIndex = index;
+    slides[currentIndex].classList.add('carousel__slide--active');
+    if (dots[currentIndex]) dots[currentIndex].classList.add('carousel__dot--active');
+  }
+
+  function nextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    goToSlide(currentIndex - 1);
+  }
+
+  function startAutoPlay() {
+    stopAutoPlay();
+    autoPlayInterval = setInterval(nextSlide, AUTO_PLAY_DELAY);
+  }
+
+  function stopAutoPlay() {
+    if (autoPlayInterval) clearInterval(autoPlayInterval);
+  }
+
+  // Arrow controls
+  if (nextBtn) nextBtn.addEventListener('click', () => { nextSlide(); startAutoPlay(); });
+  if (prevBtn) prevBtn.addEventListener('click', () => { prevSlide(); startAutoPlay(); });
+
+  // Dot controls
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const slideIndex = parseInt(dot.getAttribute('data-slide'), 10);
+      goToSlide(slideIndex);
+      startAutoPlay();
+    });
+  });
+
+  // Pause on hover
+  carousel.addEventListener('mouseenter', stopAutoPlay);
+  carousel.addEventListener('mouseleave', startAutoPlay);
+
+  // Touch/swipe support
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  carousel.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+    stopAutoPlay();
+  }, { passive: true });
+
+  carousel.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    const diff = touchStartX - touchEndX;
+    if (Math.abs(diff) > 50) {
+      if (diff > 0) nextSlide();
+      else prevSlide();
+    }
+    startAutoPlay();
+  }, { passive: true });
+
+  // Keyboard controls
+  document.addEventListener('keydown', (e) => {
+    // Only respond if carousel is visible
+    const rect = carousel.getBoundingClientRect();
+    if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+
+    if (e.key === 'ArrowLeft') { prevSlide(); startAutoPlay(); }
+    if (e.key === 'ArrowRight') { nextSlide(); startAutoPlay(); }
+  });
+
+  // Start auto-play
+  startAutoPlay();
+}
+
+/* --- Animated Counters --- */
+function initCounters() {
+  const counters = document.querySelectorAll('.stat-item__number[data-count]');
+  if (!counters.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  counters.forEach(counter => observer.observe(counter));
+
+  function animateCounter(el) {
+    const target = parseInt(el.getAttribute('data-count'), 10);
+    const duration = 2000;
+    const startTime = performance.now();
+
+    function update(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Ease out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const currentValue = Math.round(eased * target);
+      el.textContent = currentValue;
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = target;
+      }
+    }
+
+    requestAnimationFrame(update);
+  }
+}
+
 /* --- Lightbox --- */
 function initLightbox() {
   const lightbox = document.getElementById('lightbox');
@@ -112,13 +253,13 @@ function initLightbox() {
   const prevBtn = lightbox.querySelector('.lightbox__nav--prev');
   const nextBtn = lightbox.querySelector('.lightbox__nav--next');
 
-  const galleryItems = document.querySelectorAll('[data-lightbox]');
+  const galleryItems = document.querySelectorAll('.gallery-item');
   let currentIndex = 0;
   const images = [];
 
   galleryItems.forEach((item, index) => {
-    const src = item.getAttribute('data-lightbox') || item.querySelector('img')?.src;
-    if (src) images.push(src);
+    const img = item.querySelector('img');
+    if (img) images.push(img.src);
 
     item.addEventListener('click', () => {
       currentIndex = index;
@@ -127,6 +268,7 @@ function initLightbox() {
   });
 
   function openLightbox(src) {
+    if (!src) return;
     lightboxImg.src = src;
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
@@ -138,9 +280,7 @@ function initLightbox() {
     lightboxImg.src = '';
   }
 
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closeLightbox);
-  }
+  if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
 
   lightbox.addEventListener('click', (e) => {
     if (e.target === lightbox) closeLightbox();

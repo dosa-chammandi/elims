@@ -1,11 +1,11 @@
 /* ============================================
-   RESPONSIVE STYLES
+   RESPONSIVE STYLES — v2 Immersive Redesign
    ============================================ */
 
 /* --- Tablet (max-width: 1024px) --- */
 @media (max-width: 1024px) {
   :root {
-    --nav-height: 70px;
+    --nav-height: 64px;
   }
 
   h1 { font-size: 2.25rem; }
@@ -19,25 +19,18 @@
     padding: var(--space-3xl) 0;
   }
 
-  /* Top bar & Branding */
-  .top-contact-bar {
-    font-size: 0.75rem;
-  }
-
-  .branding-bar {
+  /* Top bar */
+  .top-bar {
     display: none;
   }
 
-  .logo.logo--mobile-only {
-    display: flex;
+  .header {
+    top: 0;
   }
 
-  .nav__cta {
-    display: block;
-  }
-
-  .header__inner {
-    justify-content: space-between;
+  .header--transparent {
+    background: rgba(27, 42, 74, 0.95);
+    backdrop-filter: blur(10px);
   }
 
   /* Nav */
@@ -45,17 +38,28 @@
     display: flex;
   }
 
+  .nav__cta {
+    display: block;
+    margin-left: 0;
+    margin-top: var(--space-lg);
+    width: 100%;
+  }
+
+  .nav__cta .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .header__inner {
+    justify-content: space-between;
+  }
+
   .logo img {
     height: 40px;
   }
 
   .logo__name {
-    font-size: 0.9rem;
-    color: var(--white);
-  }
-
-  .logo__tagline {
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
   }
 
   .nav {
@@ -124,17 +128,6 @@
     font-size: 0.8125rem;
   }
 
-  .nav__cta {
-    margin-left: 0;
-    margin-top: var(--space-lg);
-    width: 100%;
-  }
-
-  .nav__cta .btn {
-    width: 100%;
-    justify-content: center;
-  }
-
   /* Mobile overlay */
   .nav-overlay {
     display: none;
@@ -148,37 +141,36 @@
     display: block;
   }
 
-  /* Top contact bar hide on small mobile */
-  .top-contact-bar {
-    display: none;
+  /* Hero Carousel */
+  .hero-carousel {
+    height: 80vh;
+    min-height: 500px;
   }
 
-  /* Hero */
-  .hero {
-    min-height: 70vh;
+  .carousel__content {
+    padding-top: var(--nav-height);
   }
 
-  .hero .container {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .hero h1 {
+  .carousel__content h1 {
     font-size: 2.5rem;
   }
 
-  .hero__actions {
-    justify-content: center;
+  .carousel__arrow--prev { left: 1rem; }
+  .carousel__arrow--next { right: 1rem; }
+
+  .carousel__arrow {
+    width: 40px;
+    height: 40px;
   }
 
-  .hero__stats {
-    margin-left: 0;
-    justify-content: center;
+  /* Stats */
+  .stats-bar__grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-md);
   }
 
-  /* Highlights */
-  .highlights__grid {
-    grid-template-columns: repeat(2, 1fr);
+  .stat-item__number {
+    font-size: 2rem;
   }
 
   /* About */
@@ -191,14 +183,29 @@
     height: 350px;
   }
 
-  /* Grids */
-  .grid--3 {
+  /* Courses */
+  .courses-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .grid--4 {
+  /* NIRF */
+  .nirf-viewer__embed iframe {
+    height: 450px;
+  }
+
+  /* IQAC */
+  .iqac-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  /* News */
+  .news-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Grids */
+  .grid--3 { grid-template-columns: repeat(2, 1fr); }
+  .grid--4 { grid-template-columns: repeat(2, 1fr); }
 
   /* Gallery */
   .gallery-grid {
@@ -235,31 +242,48 @@
   }
 
   /* Hero */
-  .hero {
-    min-height: 60vh;
-    padding: var(--space-2xl) 0;
+  .hero-carousel {
+    height: 85vh;
+    min-height: 480px;
   }
 
-  .hero h1 {
+  .carousel__content h1 {
     font-size: 2rem;
   }
 
-  .hero__description {
-    font-size: 1rem;
+  .carousel__content p {
+    font-size: 0.9375rem;
   }
 
-  .hero__stats {
-    gap: var(--space-xl);
+  .carousel__badge {
+    font-size: 0.75rem;
   }
 
-  .hero__stat-number {
-    font-size: 2rem;
+  .carousel__actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  /* Highlights */
-  .highlights__grid {
-    grid-template-columns: 1fr 1fr;
+  .carousel__actions .btn {
+    justify-content: center;
+  }
+
+  .carousel__arrow {
+    display: none;
+  }
+
+  /* Stats */
+  .stats-bar__grid {
+    grid-template-columns: repeat(2, 1fr);
     gap: var(--space-md);
+  }
+
+  .stat-item:not(:last-child)::after {
+    display: none;
+  }
+
+  .stat-item__number {
+    font-size: 2rem;
   }
 
   /* About features */
@@ -267,14 +291,38 @@
     grid-template-columns: 1fr;
   }
 
-  /* Grids */
-  .grid--2 {
+  /* Courses */
+  .courses-grid {
     grid-template-columns: 1fr;
   }
 
-  .grid--3 {
+  /* NIRF */
+  .nirf-viewer__embed iframe {
+    height: 350px;
+  }
+
+  .nirf-viewer__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .nirf-viewer__actions .btn {
+    justify-content: center;
+  }
+
+  /* IQAC */
+  .iqac-grid {
     grid-template-columns: 1fr;
   }
+
+  /* News */
+  .news-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Grids */
+  .grid--2 { grid-template-columns: 1fr; }
+  .grid--3 { grid-template-columns: 1fr; }
 
   /* Gallery */
   .gallery-grid {
@@ -315,6 +363,16 @@
     gap: var(--space-sm);
   }
 
+  /* CTA Banner */
+  .cta-banner__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .cta-banner__actions .btn {
+    justify-content: center;
+  }
+
   /* Lightbox */
   .lightbox__nav--prev { left: var(--space-sm); }
   .lightbox__nav--next { right: var(--space-sm); }
@@ -329,27 +387,30 @@
     padding: 0 var(--space-md);
   }
 
-  .hero h1 {
+  /* Hero */
+  .carousel__content h1 {
     font-size: 1.75rem;
   }
 
-  .hero__stats {
-    flex-direction: column;
-    gap: var(--space-lg);
+  .carousel__content p {
+    font-size: 0.875rem;
   }
 
-  .hero__actions {
-    flex-direction: column;
-    align-items: stretch;
+  .carousel__dots {
+    bottom: 1.5rem;
   }
 
-  .hero__actions .btn {
-    justify-content: center;
+  /* Stats */
+  .stats-bar__grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  /* Highlights */
-  .highlights__grid {
-    grid-template-columns: 1fr;
+  .stat-item {
+    padding: var(--space-md);
+  }
+
+  .stat-item__number {
+    font-size: 1.75rem;
   }
 
   /* Gallery */
@@ -377,5 +438,15 @@
   .btn--lg {
     width: 100%;
     justify-content: center;
+  }
+
+  /* NIRF */
+  .nirf-viewer__embed iframe {
+    height: 280px;
+  }
+
+  /* Logo */
+  .logo__text {
+    display: none;
   }
 }
