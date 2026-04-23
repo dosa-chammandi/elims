@@ -55,11 +55,17 @@
   }
 
   .logo img {
-    height: 40px;
+    height: 44px;
+    width: 44px;
+    padding: 2px;
   }
 
   .logo__name {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
+  }
+
+  .logo__tagline {
+    font-size: 0.65rem;
   }
 
   .nav {
@@ -446,6 +452,12 @@
   }
 
   /* Logo */
+  .logo img {
+    height: 38px;
+    width: 38px;
+    padding: 2px;
+  }
+
   .logo__text {
     display: none;
   }
