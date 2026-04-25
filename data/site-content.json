@@ -1,0 +1,14 @@
+{
+  "carousel": [
+    "/assets/images/managed/carousel/1777130705220_4589680e02e2.jpg"
+  ],
+  "gallery": [
+    "/assets/images/managed/gallery/1777130718620_fe489004f51f.jpg"
+  ],
+  "popup": {
+    "enabled": true,
+    "image": "/assets/images/managed/popup/1777130724820_ac63c094b850.jpg",
+    "link": "/pages/admission.html",
+    "alt": "Admission update"
+  }
+}

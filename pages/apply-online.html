@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply Online — ELIMS College of Pharmacy</title>
+  <meta name="description" content="Apply online for B.Pharm, Pharm.D, M.Pharm and other programs at ELIMS College of Pharmacy, Thrissur. 2026–2027 admissions open.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header header--scrolled" id="header">
+    <div class="container header__inner">
+      <a href="../index.html" class="logo">
+        <img src="../assets/images/logo.webp" alt="ELIMS College of Pharmacy">
+        <div class="logo__text">
+          <span class="logo__name">ELIMS College of Pharmacy</span>
+          <span class="logo__tagline">Approved by Pharmacy Council of India (PCI)<br>Affiliated to Kerala University of Health Sciences (KUHS)</span>
+        </div>
+      </a>
+      <nav class="nav" id="nav">
+        <ul class="nav__list">
+          <li class="nav__item"><a href="../index.html" class="nav__link">Home</a></li>
+          <li class="nav__item"><a href="about.html" class="nav__link">About Us <span class="arrow">▾</span></a><div class="dropdown"><a href="about.html" class="dropdown__link">College Profile</a><a href="about.html#mission" class="dropdown__link">Mission &amp; Vision</a><a href="about.html#management" class="dropdown__link">Management</a><a href="about.html#approvals" class="dropdown__link">Approvals</a></div></li>
+          <li class="nav__item"><a href="#" class="nav__link">Academics <span class="arrow">▾</span></a><div class="dropdown"><a href="b-pharm.html" class="dropdown__link">B. Pharm (4 Years)</a><a href="b-pharm-lateral.html" class="dropdown__link">B. Pharm Lateral Entry</a><a href="pharm-d.html" class="dropdown__link">Pharm.D (6 Years)</a><a href="pharm-d-pb.html" class="dropdown__link">Pharm.D (PB) (3 Years)</a><a href="m-pharm-pharmaceutics.html" class="dropdown__link">M.Pharm Pharmaceutics</a><a href="m-pharm-pharmacy-practice.html" class="dropdown__link">M.Pharm Pharmacy Practice</a><a href="academic-calendar.html" class="dropdown__link">Academic Calendar</a></div></li>
+          <li class="nav__item"><a href="admission.html" class="nav__link nav__link--active">Admission</a></li>
+          <li class="nav__item"><a href="departments.html" class="nav__link">Departments</a></li>
+          <li class="nav__item"><a href="#" class="nav__link">Facilities <span class="arrow">▾</span></a><div class="dropdown"><a href="facilities.html" class="dropdown__link">Overview</a><a href="facilities-library.html" class="dropdown__link">Library</a><a href="facilities-labs.html" class="dropdown__link">Laboratories</a><a href="facilities-hostel.html" class="dropdown__link">Hostel</a><a href="facilities-computer.html" class="dropdown__link">Computer Lab</a><a href="facilities-outdoor.html" class="dropdown__link">Sports &amp; Outdoor</a><a href="facilities-transport.html" class="dropdown__link">Transportation</a></div></li>
+          <li class="nav__item"><a href="nirf.html" class="nav__link">NIRF</a></li>
+          <li class="nav__item"><a href="iqac.html" class="nav__link">IQAC</a></li>
+          <li class="nav__item"><a href="#" class="nav__link">More <span class="arrow">▾</span></a><div class="dropdown"><a href="committees.html" class="dropdown__link">Committees</a><a href="pta.html" class="dropdown__link">PTA</a><a href="gallery.html" class="dropdown__link">Gallery</a><a href="news.html" class="dropdown__link">News &amp; Events</a><a href="contact.html" class="dropdown__link">Contact Us</a></div></li>
+        </ul>
+        <div class="nav__cta"><a href="apply-online.html" class="btn btn--accent btn--sm">Apply Now</a></div>
+      </nav>
+      <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Apply Online</h1>
+      <div class="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span class="separator">›</span>
+        <a href="admission.html">Admission</a>
+        <span class="separator">›</span>
+        <span class="current">Online Application</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION FORM SECTION -->
+  <section class="page-content">
+    <div class="container container--narrow">
+
+      <!-- Application Number Banner -->
+      <div class="appform-banner">
+        <div class="appform-banner__left">
+          <span class="appform-banner__label">Application Number</span>
+          <span class="appform-banner__number" id="appNumber">Generating…</span>
+        </div>
+        <div class="appform-banner__right">
+          <span class="appform-banner__note">Academic Year 2026 – 2027 | Please save this number for reference.</span>
+        </div>
+      </div>
+
+      <!-- Step Progress -->
+      <div class="appform-steps" id="stepIndicator" role="progressbar" aria-label="Application form steps">
+        <div class="appform-step appform-step--active" data-step="1">
+          <div class="appform-step__dot">1</div>
+          <span class="appform-step__label">Course</span>
+        </div>
+        <div class="appform-step__connector"></div>
+        <div class="appform-step" data-step="2">
+          <div class="appform-step__dot">2</div>
+          <span class="appform-step__label">Personal</span>
+        </div>
+        <div class="appform-step__connector"></div>
+        <div class="appform-step" data-step="3">
+          <div class="appform-step__dot">3</div>
+          <span class="appform-step__label">Address</span>
+        </div>
+        <div class="appform-step__connector"></div>
+        <div class="appform-step" data-step="4">
+          <div class="appform-step__dot">4</div>
+          <span class="appform-step__label">Academic</span>
+        </div>
+        <div class="appform-step__connector"></div>
+        <div class="appform-step" data-step="5">
+          <div class="appform-step__dot">5</div>
+          <span class="appform-step__label">Subjects</span>
+        </div>
+        <div class="appform-step__connector"></div>
+        <div class="appform-step" data-step="6">
+          <div class="appform-step__dot">6</div>
+          <span class="appform-step__label">Parent</span>
+        </div>
+        <div class="appform-step__connector"></div>
+        <div class="appform-step" data-step="7">
+          <div class="appform-step__dot">7</div>
+          <span class="appform-step__label">Documents</span>
+        </div>
+        <div class="appform-step__connector"></div>
+        <div class="appform-step" data-step="8">
+          <div class="appform-step__dot">8</div>
+          <span class="appform-step__label">Declare</span>
+        </div>
+      </div>
+
+      <!-- THE FORM -->
+      <form id="admissionForm" method="POST" action="/submit-application" enctype="multipart/form-data" novalidate>
+        <input type="hidden" name="application_number" id="hiddenAppNumber">
+
+        <!-- ===== STEP 1: Course & Quota ===== -->
+        <div class="appform-panel appform-panel--active" data-panel="1">
+          <div class="appform-panel__header">
+            <h2 class="appform-panel__title">Course &amp; Quota Selection</h2>
+            <p class="appform-panel__desc">Select the program you are applying for and the type of seat.</p>
+            <div style="margin-top:10px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+              <label class="appform-checkbox-label" style="margin:0;">
+                <input type="checkbox" id="dummy_mode">
+                <span>Test mode (use dummy data)</span>
+              </label>
+              <button type="button" class="btn btn--outline-dark" id="dummyFillBtn">Fill Dummy Data &amp; Jump to Declaration</button>
+            </div>
+          </div>
+
+          <div class="appform-fields">
+            <div class="appform-row appform-row--2">
+              <div class="appform-field">
+                <label class="appform-label" for="course_applied_for">Course Applied For <span class="req">*</span></label>
+                <select class="appform-input" id="course_applied_for" name="course_applied_for" required>
+                  <option value="">— Select Course —</option>
+                  <option value="B.Pharm">B. Pharm (4 Years)</option>
+                  <option value="B.Pharm Lateral Entry">B. Pharm Lateral Entry</option>
+                  <option value="Pharm.D">Pharm.D (6 Years)</option>
+                  <option value="Pharm.D (PB)">Pharm.D Post Baccalaureate (3 Years)</option>
+                  <option value="M.Pharm Pharmaceutics">M.Pharm — Pharmaceutics</option>
+                  <option value="M.Pharm Pharmacy Practice">M.Pharm — Pharmacy Practice</option>
+                </select>
+                <span class="appform-error" id="err-course_applied_for"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="quota">Quota / Seat Type <span class="req">*</span></label>
+                <select class="appform-input" id="quota" name="quota" required>
+                  <option value="">— Select Quota —</option>
+                  <option value="Merit">Merit</option>
+                  <option value="Management">Management</option>
+                </select>
+                <span class="appform-error" id="err-quota"></span>
+              </div>
+            </div>
+
+            <div class="appform-field">
+              <label class="appform-label" for="applicant_photo">Passport-size Photograph <span class="req">*</span></label>
+              <p class="appform-hint">Upload a recent passport-size colour photo (JPG/PNG, max 500 KB).</p>
+              <div class="appform-file-wrap">
+                <input type="file" class="appform-file" id="applicant_photo" name="applicant_photo" accept="image/jpeg,image/png" required>
+                <div class="appform-file-preview" id="photoPreview">
+                  <span class="appform-file-placeholder">No file chosen</span>
+                </div>
+              </div>
+              <span class="appform-error" id="err-applicant_photo"></span>
+            </div>
+          </div>
+
+          <div class="appform-nav">
+            <span></span>
+            <button type="button" class="btn btn--primary" onclick="goToStep(2)">Next: Personal Details →</button>
+          </div>
+        </div>
+
+        <!-- ===== STEP 2: Personal Details ===== -->
+        <div class="appform-panel" data-panel="2">
+          <div class="appform-panel__header">
+            <h2 class="appform-panel__title">Personal Details</h2>
+            <p class="appform-panel__desc">Enter your personal information as per official documents.</p>
+          </div>
+
+          <div class="appform-fields">
+            <div class="appform-row appform-row--2">
+              <div class="appform-field appform-field--span2">
+                <label class="appform-label" for="full_name">Full Name (as per certificates) <span class="req">*</span></label>
+                <input type="text" class="appform-input" id="full_name" name="full_name" placeholder="e.g. Arun Kumar P" required maxlength="100">
+                <span class="appform-error" id="err-full_name"></span>
+              </div>
+            </div>
+
+            <div class="appform-row appform-row--3">
+              <div class="appform-field">
+                <label class="appform-label" for="date_of_birth">Date of Birth <span class="req">*</span></label>
+                <input type="date" class="appform-input" id="date_of_birth" name="date_of_birth" required>
+                <span class="appform-error" id="err-date_of_birth"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="age">Age (as on 01 July 2026)</label>
+                <input type="number" class="appform-input" id="age" name="age" min="15" max="50" placeholder="e.g. 18" readonly>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="gender">Gender <span class="req">*</span></label>
+                <select class="appform-input" id="gender" name="gender" required>
+                  <option value="">— Select —</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Transgender">Transgender</option>
+                </select>
+                <span class="appform-error" id="err-gender"></span>
+              </div>
+            </div>
+
+            <div class="appform-row appform-row--3">
+              <div class="appform-field">
+                <label class="appform-label" for="blood_group">Blood Group</label>
+                <select class="appform-input" id="blood_group" name="blood_group">
+                  <option value="">— Select —</option>
+                  <option>A+</option><option>A-</option>
+                  <option>B+</option><option>B-</option>
+                  <option>O+</option><option>O-</option>
+                  <option>AB+</option><option>AB-</option>
+                </select>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="nationality">Nationality <span class="req">*</span></label>
+                <input type="text" class="appform-input" id="nationality" name="nationality" value="Indian" required maxlength="50">
+                <span class="appform-error" id="err-nationality"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="religion">Religion</label>
+                <input type="text" class="appform-input" id="religion" name="religion" placeholder="e.g. Hindu" maxlength="50">
+              </div>
+            </div>
+
+            <div class="appform-row appform-row--3">
+              <div class="appform-field">
+                <label class="appform-label" for="caste_or_community">Caste / Community</label>
+                <input type="text" class="appform-input" id="caste_or_community" name="caste_or_community" placeholder="e.g. Ezhava" maxlength="80">
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="category">Category <span class="req">*</span></label>
+                <select class="appform-input" id="category" name="category" required>
+                  <option value="">— Select —</option>
+                  <option value="General">General</option>
+                  <option value="OBC">OBC</option>
+                  <option value="OEC">OEC</option>
+                  <option value="SC">SC</option>
+                  <option value="ST">ST</option>
+                </select>
+                <span class="appform-error" id="err-category"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="aadhaar_number">Aadhaar Number</label>
+                <input type="text" class="appform-input" id="aadhaar_number" name="aadhaar_number" placeholder="XXXX XXXX XXXX" maxlength="14" pattern="\d{4}\s?\d{4}\s?\d{4}">
+                <span class="appform-error" id="err-aadhaar_number"></span>
+              </div>
+            </div>
+
+            <div class="appform-row appform-row--2">
+              <div class="appform-field">
+                <label class="appform-label" for="email">Email Address <span class="req">*</span></label>
+                <input type="email" class="appform-input" id="email" name="email" placeholder="you@example.com" required maxlength="100">
+                <span class="appform-error" id="err-email"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="place_of_birth">Place of Birth (District, Taluk)</label>
+                <input type="text" class="appform-input" id="place_of_birth" name="place_of_birth" placeholder="e.g. Thrissur, Kodungallur" maxlength="100">
+              </div>
+            </div>
+          </div>
+
+          <div class="appform-nav">
+            <button type="button" class="btn btn--outline-dark" onclick="goToStep(1)">← Back</button>
+            <button type="button" class="btn btn--primary" onclick="goToStep(3)">Next: Address →</button>
+          </div>
+        </div>
+
+        <!-- ===== STEP 3: Address ===== -->
+        <div class="appform-panel" data-panel="3">
+          <div class="appform-panel__header">
+            <h2 class="appform-panel__title">Address Details</h2>
+          </div>
+
+          <div class="appform-fields">
+            <h3 class="appform-section-title">Communication Address</h3>
+
+            <div class="appform-field">
+              <label class="appform-label" for="comm_address">Address <span class="req">*</span></label>
+              <textarea class="appform-input appform-textarea" id="comm_address" name="comm_address" rows="3" placeholder="House No., Street, Locality, PO" required maxlength="300"></textarea>
+              <span class="appform-error" id="err-comm_address"></span>
+            </div>
+
+            <div class="appform-row appform-row--3">
+              <div class="appform-field">
+                <label class="appform-label" for="comm_district">District <span class="req">*</span></label>
+                <input type="text" class="appform-input" id="comm_district" name="comm_district" placeholder="e.g. Thrissur" required maxlength="60">
+                <span class="appform-error" id="err-comm_district"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="comm_state">State <span class="req">*</span></label>
+                <input type="text" class="appform-input" id="comm_state" name="comm_state" value="Kerala" required maxlength="60">
+                <span class="appform-error" id="err-comm_state"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="comm_pin">PIN Code <span class="req">*</span></label>
+                <input type="text" class="appform-input" id="comm_pin" name="comm_pin" placeholder="e.g. 680631" required maxlength="6" pattern="\d{6}">
+                <span class="appform-error" id="err-comm_pin"></span>
+              </div>
+            </div>
+
+            <div class="appform-row appform-row--2">
+              <div class="appform-field">
+                <label class="appform-label" for="comm_phone">Phone Number <span class="req">*</span></label>
+                <input type="tel" class="appform-input" id="comm_phone" name="comm_phone" placeholder="+91 XXXXX XXXXX" required maxlength="15">
+                <span class="appform-error" id="err-comm_phone"></span>
+              </div>
+            </div>
+
+            <div class="appform-same-address">
+              <label class="appform-checkbox-label">
+                <input type="checkbox" id="sameAddress" name="same_address" value="1" onchange="toggleSameAddress(this)">
+                <span>Permanent address is same as communication address</span>
+              </label>
+            </div>
+
+            <div id="permanentAddressBlock">
+              <h3 class="appform-section-title">Permanent Address</h3>
+
+              <div class="appform-field">
+                <label class="appform-label" for="perm_address">Address</label>
+                <textarea class="appform-input appform-textarea" id="perm_address" name="perm_address" rows="3" placeholder="House No., Street, Locality, PO" maxlength="300"></textarea>
+              </div>
+
+              <div class="appform-row appform-row--3">
+                <div class="appform-field">
+                  <label class="appform-label" for="perm_district">District</label>
+                  <input type="text" class="appform-input" id="perm_district" name="perm_district" placeholder="e.g. Thrissur" maxlength="60">
+                </div>
+                <div class="appform-field">
+                  <label class="appform-label" for="perm_state">State</label>
+                  <input type="text" class="appform-input" id="perm_state" name="perm_state" value="Kerala" maxlength="60">
+                </div>
+                <div class="appform-field">
+                  <label class="appform-label" for="perm_pin">PIN Code</label>
+                  <input type="text" class="appform-input" id="perm_pin" name="perm_pin" placeholder="e.g. 680631" maxlength="6" pattern="\d{6}">
+                </div>
+              </div>
+
+              <div class="appform-row appform-row--2">
+                <div class="appform-field">
+                  <label class="appform-label" for="perm_phone">Phone Number</label>
+                  <input type="tel" class="appform-input" id="perm_phone" name="perm_phone" placeholder="+91 XXXXX XXXXX" maxlength="15">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="appform-nav">
+            <button type="button" class="btn btn--outline-dark" onclick="goToStep(2)">← Back</button>
+            <button type="button" class="btn btn--primary" onclick="goToStep(4)">Next: Academic Records →</button>
+          </div>
+        </div>
+
+        <!-- ===== STEP 4: Academic Records ===== -->
+        <div class="appform-panel" data-panel="4">
+          <div class="appform-panel__header">
+            <h2 class="appform-panel__title">Academic Records</h2>
+            <p class="appform-panel__desc">Enter details of all examinations passed.</p>
+          </div>
+
+          <div class="appform-fields">
+            <div class="appform-table-wrap">
+              <table class="appform-table">
+                <thead>
+                  <tr>
+                    <th>Examination</th>
+                    <th>Board / University</th>
+                    <th>Year of Passing</th>
+                    <th>Class Obtained</th>
+                    <th>Medium</th>
+                    <th>%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="appform-exam-label">SSLC (10th)</span><input type="hidden" name="acad[0][exam]" value="SSLC"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[0][board]" placeholder="Board name" maxlength="80"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="acad[0][year]" placeholder="2020" min="2000" max="2030"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[0][class]" placeholder="A / First" maxlength="20"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[0][medium]" placeholder="English" maxlength="30"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="acad[0][percentage]" placeholder="85.5" min="0" max="100" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td><span class="appform-exam-label">HSC / +2 (12th)</span><input type="hidden" name="acad[1][exam]" value="HSC"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[1][board]" placeholder="Board name" maxlength="80"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="acad[1][year]" placeholder="2022" min="2000" max="2030"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[1][class]" placeholder="A / First" maxlength="20"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[1][medium]" placeholder="English" maxlength="30"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="acad[1][percentage]" placeholder="88.0" min="0" max="100" step="0.01"></td>
+                  </tr>
+                  <!-- D.Pharm row: shown only for Lateral Entry -->
+                  <tr id="dpharmAcadRow" style="display:none;">
+                    <td><span class="appform-exam-label">D. Pharm</span><input type="hidden" name="acad[2][exam]" value="D.Pharm"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[2][board]" placeholder="University name" maxlength="80"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="acad[2][year]" placeholder="2024" min="2000" max="2030"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[2][class]" placeholder="First" maxlength="20"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[2][medium]" placeholder="English" maxlength="30"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="acad[2][percentage]" placeholder="72.0" min="0" max="100" step="0.01"></td>
+                  </tr>
+                  <!-- B.Pharm row: shown for PG/PB courses -->
+                  <tr id="bpharmAcadRow" style="display:none;">
+                    <td><span class="appform-exam-label">B. Pharm</span><input type="hidden" name="acad[3][exam]" value="B.Pharm"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[3][board]" placeholder="University name" maxlength="80"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="acad[3][year]" placeholder="2024" min="2000" max="2030"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[3][class]" placeholder="First" maxlength="20"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="acad[3][medium]" placeholder="English" maxlength="30"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="acad[3][percentage]" placeholder="65.0" min="0" max="100" step="0.01"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Entrance Exam Info -->
+            <div class="appform-section-divider"></div>
+            <h3 class="appform-section-title">Entrance Examination</h3>
+
+            <div class="appform-row appform-row--3">
+              <!-- KEAM: shown for UG courses -->
+              <div class="appform-field" id="keamField">
+                <label class="appform-label" for="keam_rank">KEAM Rank (if applicable)</label>
+                <input type="text" class="appform-input" id="keam_rank" name="keam_rank" placeholder="e.g. 12345" maxlength="10">
+              </div>
+              <!-- GPAT: shown for PG courses -->
+              <div class="appform-field" id="gpatField" style="display:none;">
+                <label class="appform-label" for="gpat_score">GPAT Score (if applicable)</label>
+                <input type="text" class="appform-input" id="gpat_score" name="gpat_score" placeholder="e.g. 142" maxlength="10">
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="entrance_roll_no">Entrance Roll No.</label>
+                <input type="text" class="appform-input" id="entrance_roll_no" name="entrance_roll_no" placeholder="Roll number" maxlength="20">
+              </div>
+            </div>
+
+            <!-- D.Pharm detailed marks: shown for Lateral Entry -->
+            <div id="dpharmMarksBlock" style="display:none;">
+              <div class="appform-section-divider"></div>
+              <h3 class="appform-section-title">D. Pharm — Detailed Marks</h3>
+              <div class="appform-row appform-row--3">
+                <div class="appform-field">
+                  <label class="appform-label" for="dpharm_yr1">First Year Marks</label>
+                  <input type="number" class="appform-input" id="dpharm_yr1" name="dpharm_yr1" min="0" max="1000">
+                </div>
+                <div class="appform-field">
+                  <label class="appform-label" for="dpharm_yr2">Second Year Marks</label>
+                  <input type="number" class="appform-input" id="dpharm_yr2" name="dpharm_yr2" min="0" max="1000">
+                </div>
+                <div class="appform-field">
+                  <label class="appform-label" for="dpharm_total_max">Total Maximum Marks</label>
+                  <input type="number" class="appform-input" id="dpharm_total_max" name="dpharm_total_max" min="0" max="2000">
+                </div>
+              </div>
+              <div class="appform-row appform-row--2">
+                <div class="appform-field">
+                  <label class="appform-label" for="dpharm_total_scored">Total Marks Scored</label>
+                  <input type="number" class="appform-input" id="dpharm_total_scored" name="dpharm_total_scored" min="0" max="2000">
+                </div>
+                <div class="appform-field">
+                  <label class="appform-label" for="dpharm_percentage">D. Pharm Percentage (%)</label>
+                  <input type="number" class="appform-input" id="dpharm_percentage" name="dpharm_percentage" min="0" max="100" step="0.01" placeholder="e.g. 72.50">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="appform-nav">
+            <button type="button" class="btn btn--outline-dark" onclick="goToStep(3)">← Back</button>
+            <button type="button" class="btn btn--primary" onclick="goToStep(5)">Next: Subject Marks →</button>
+          </div>
+        </div>
+
+        <!-- ===== STEP 5: Subject-wise Marks ===== -->
+        <div class="appform-panel" data-panel="5">
+          <div class="appform-panel__header">
+            <h2 class="appform-panel__title">Subject-wise Marks (HSC / +2)</h2>
+            <p class="appform-panel__desc">Enter marks for your qualifying examination subjects. Leave blank if subject was not taken.</p>
+          </div>
+
+          <div class="appform-fields">
+            <div class="appform-table-wrap">
+              <table class="appform-table">
+                <thead>
+                  <tr>
+                    <th>Subject</th>
+                    <th>Max Marks</th>
+                    <th>Marks Obtained</th>
+                    <th>Grade</th>
+                    <th>%</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><span class="appform-exam-label">Physics</span></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[physics][max]" min="0" max="200"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[physics][obtained]" min="0" max="200"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="subj[physics][grade]" maxlength="5" placeholder="A+"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[physics][percentage]" min="0" max="100" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td><span class="appform-exam-label">Chemistry</span></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[chemistry][max]" min="0" max="200"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[chemistry][obtained]" min="0" max="200"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="subj[chemistry][grade]" maxlength="5" placeholder="A+"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[chemistry][percentage]" min="0" max="100" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td><span class="appform-exam-label">Biology</span></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[biology][max]" min="0" max="200"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[biology][obtained]" min="0" max="200"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="subj[biology][grade]" maxlength="5" placeholder="A+"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[biology][percentage]" min="0" max="100" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td><span class="appform-exam-label">Mathematics</span></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[mathematics][max]" min="0" max="200"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[mathematics][obtained]" min="0" max="200"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="subj[mathematics][grade]" maxlength="5" placeholder="A+"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[mathematics][percentage]" min="0" max="100" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td><span class="appform-exam-label">Computer Science</span></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[computer][max]" min="0" max="200"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[computer][obtained]" min="0" max="200"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="subj[computer][grade]" maxlength="5" placeholder="A+"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[computer][percentage]" min="0" max="100" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td><span class="appform-exam-label">English</span></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[english][max]" min="0" max="200"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[english][obtained]" min="0" max="200"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="subj[english][grade]" maxlength="5" placeholder="A+"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[english][percentage]" min="0" max="100" step="0.01"></td>
+                  </tr>
+                  <tr>
+                    <td><span class="appform-exam-label">Malayalam</span></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[malayalam][max]" min="0" max="200"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[malayalam][obtained]" min="0" max="200"></td>
+                    <td><input type="text" class="appform-input appform-input--sm" name="subj[malayalam][grade]" maxlength="5" placeholder="A+"></td>
+                    <td><input type="number" class="appform-input appform-input--sm" name="subj[malayalam][percentage]" min="0" max="100" step="0.01"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="appform-section-divider"></div>
+            <div class="appform-row appform-row--2">
+              <div class="appform-field">
+                <label class="appform-label" for="pcb_percentage">PCB / PCM Aggregate % <span class="req">*</span></label>
+                <input type="number" class="appform-input" id="pcb_percentage" name="pcb_percentage" min="0" max="100" step="0.01" placeholder="e.g. 76.25" required>
+                <p class="appform-hint">Physics + Chemistry + Biology (or Mathematics) combined percentage.</p>
+                <span class="appform-error" id="err-pcb_percentage"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="appform-nav">
+            <button type="button" class="btn btn--outline-dark" onclick="goToStep(4)">← Back</button>
+            <button type="button" class="btn btn--primary" onclick="goToStep(6)">Next: Parent Details →</button>
+          </div>
+        </div>
+
+        <!-- ===== STEP 6: Parent / Guardian ===== -->
+        <div class="appform-panel" data-panel="6">
+          <div class="appform-panel__header">
+            <h2 class="appform-panel__title">Parent / Guardian Details</h2>
+          </div>
+
+          <div class="appform-fields">
+            <div class="appform-row appform-row--2">
+              <div class="appform-field">
+                <label class="appform-label" for="parent_name">Parent / Guardian Name <span class="req">*</span></label>
+                <input type="text" class="appform-input" id="parent_name" name="parent_name" required maxlength="100" placeholder="Full name">
+                <span class="appform-error" id="err-parent_name"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="relationship">Relationship <span class="req">*</span></label>
+                <select class="appform-input" id="relationship" name="relationship" required>
+                  <option value="">— Select —</option>
+                  <option value="Father">Father</option>
+                  <option value="Mother">Mother</option>
+                  <option value="Guardian">Guardian</option>
+                </select>
+                <span class="appform-error" id="err-relationship"></span>
+              </div>
+            </div>
+
+            <div class="appform-row appform-row--3">
+              <div class="appform-field">
+                <label class="appform-label" for="occupation">Occupation</label>
+                <input type="text" class="appform-input" id="occupation" name="occupation" maxlength="80" placeholder="e.g. Business">
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="designation">Designation</label>
+                <input type="text" class="appform-input" id="designation" name="designation" maxlength="80" placeholder="e.g. Manager">
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="annual_income">Annual Income (₹)</label>
+                <input type="number" class="appform-input" id="annual_income" name="annual_income" min="0" placeholder="e.g. 480000">
+              </div>
+            </div>
+
+            <div class="appform-field">
+              <label class="appform-label" for="official_address">Official / Work Address</label>
+              <textarea class="appform-input appform-textarea" id="official_address" name="official_address" rows="2" placeholder="Office address (if applicable)" maxlength="300"></textarea>
+            </div>
+
+            <div class="appform-row appform-row--2">
+              <div class="appform-field">
+                <label class="appform-label" for="parent_phone">Parent Phone <span class="req">*</span></label>
+                <input type="tel" class="appform-input" id="parent_phone" name="parent_phone" required maxlength="15" placeholder="+91 XXXXX XXXXX">
+                <span class="appform-error" id="err-parent_phone"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="parent_email">Parent Email</label>
+                <input type="email" class="appform-input" id="parent_email" name="parent_email" maxlength="100" placeholder="parent@example.com">
+              </div>
+            </div>
+
+            <div class="appform-section-divider"></div>
+            <h3 class="appform-section-title">Other Information</h3>
+
+            <div class="appform-row appform-row--2">
+              <div class="appform-field">
+                <label class="appform-checkbox-label">
+                  <input type="checkbox" id="scholarship_received" name="scholarship_received" value="1" onchange="toggleScholarship(this)">
+                  <span>Scholarship received previously?</span>
+                </label>
+              </div>
+              <div class="appform-field">
+                <label class="appform-checkbox-label">
+                  <input type="checkbox" id="hostel_required" name="hostel_required" value="1">
+                  <span>Hostel accommodation required?</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="appform-field" id="scholarshipDetailsBlock" style="display:none;">
+              <label class="appform-label" for="scholarship_details">Scholarship Details</label>
+              <input type="text" class="appform-input" id="scholarship_details" name="scholarship_details" maxlength="200" placeholder="Name, amount, institution">
+            </div>
+          </div>
+
+          <div class="appform-nav">
+            <button type="button" class="btn btn--outline-dark" onclick="goToStep(5)">← Back</button>
+            <button type="button" class="btn btn--primary" onclick="goToStep(7)">Next: Documents →</button>
+          </div>
+        </div>
+
+        <!-- ===== STEP 7: Documents Upload ===== -->
+        <div class="appform-panel" data-panel="7">
+          <div class="appform-panel__header">
+            <h2 class="appform-panel__title">Documents Upload</h2>
+            <p class="appform-panel__desc">Upload scanned copies (PDF or JPG, max 2 MB each). Fields marked <span class="req">*</span> are required. Others are optional.</p>
+          </div>
+
+          <div class="appform-fields">
+            <div class="appform-docs-grid">
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_allotment_memo">Allotment Memo <span class="req">*</span></label>
+                <input type="file" class="appform-file" id="doc_allotment_memo" name="doc_allotment_memo" accept=".pdf,.jpg,.jpeg,.png" required>
+                <span class="appform-error" id="err-doc_allotment_memo"></span>
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_fee_receipt">Fee Receipt <span class="req">*</span></label>
+                <input type="file" class="appform-file" id="doc_fee_receipt" name="doc_fee_receipt" accept=".pdf,.jpg,.jpeg,.png" required>
+                <span class="appform-error" id="err-doc_fee_receipt"></span>
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_mark_list">Mark List / Certificate <span class="req">*</span></label>
+                <input type="file" class="appform-file" id="doc_mark_list" name="doc_mark_list" accept=".pdf,.jpg,.jpeg,.png" required>
+                <span class="appform-error" id="err-doc_mark_list"></span>
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_tc">Transfer Certificate (TC) <span class="req">*</span></label>
+                <input type="file" class="appform-file" id="doc_tc" name="doc_tc" accept=".pdf,.jpg,.jpeg,.png" required>
+                <span class="appform-error" id="err-doc_tc"></span>
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_migration">Migration Certificate <span class="appform-opt">(if applicable)</span></label>
+                <input type="file" class="appform-file" id="doc_migration" name="doc_migration" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_eligibility">Eligibility Certificate <span class="appform-opt">(if applicable)</span></label>
+                <input type="file" class="appform-file" id="doc_eligibility" name="doc_eligibility" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_caste">Caste Certificate <span class="appform-opt">(SC/ST/OBC/OEC)</span></label>
+                <input type="file" class="appform-file" id="doc_caste" name="doc_caste" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_pharmacy_reg">Pharmacy Registration <span class="appform-opt">(if applicable)</span></label>
+                <input type="file" class="appform-file" id="doc_pharmacy_reg" name="doc_pharmacy_reg" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_fitness">Medical Fitness Certificate</label>
+                <input type="file" class="appform-file" id="doc_fitness" name="doc_fitness" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_vaccination">Vaccination Certificate</label>
+                <input type="file" class="appform-file" id="doc_vaccination" name="doc_vaccination" accept=".pdf,.jpg,.jpeg,.png">
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_photos">Passport Photos (2–4 copies)</label>
+                <input type="file" class="appform-file" id="doc_photos" name="doc_photos[]" accept="image/jpeg,image/png" multiple>
+              </div>
+
+              <div class="appform-doc-item">
+                <label class="appform-label" for="doc_additional">Additional Documents <span class="appform-opt">(optional)</span></label>
+                <input type="file" class="appform-file" id="doc_additional" name="doc_additional[]" accept=".pdf,.jpg,.jpeg,.png" multiple>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="appform-nav">
+            <button type="button" class="btn btn--outline-dark" onclick="goToStep(6)">← Back</button>
+            <button type="button" class="btn btn--primary" onclick="goToStep(8)">Next: Declaration →</button>
+          </div>
+        </div>
+
+        <!-- ===== STEP 8: Declaration ===== -->
+        <div class="appform-panel" data-panel="8">
+          <div class="appform-panel__header">
+            <h2 class="appform-panel__title">Declaration &amp; Submission</h2>
+          </div>
+
+          <div class="appform-fields">
+            <!-- Summary preview -->
+            <div class="appform-summary" id="applicationSummary"></div>
+
+            <div class="appform-declaration-box">
+              <h3>Declaration</h3>
+              <p>I hereby declare that the information furnished above is true and correct to the best of my knowledge and belief. I understand that if any information is found to be false, my admission is liable to be cancelled at any time. I agree to abide by the rules and regulations of ELIMS College of Pharmacy and the affiliated university.</p>
+            </div>
+
+            <div class="appform-row appform-row--2">
+              <div class="appform-field">
+                <label class="appform-label" for="applicant_signature">Applicant's Signature (Type Full Name) <span class="req">*</span></label>
+                <input type="text" class="appform-input appform-signature-input" id="applicant_signature" name="applicant_signature" placeholder="Type your full name as signature" required maxlength="100">
+                <span class="appform-error" id="err-applicant_signature"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="parent_signature">Parent / Guardian Signature (Type Full Name) <span class="req">*</span></label>
+                <input type="text" class="appform-input appform-signature-input" id="parent_signature" name="parent_signature" placeholder="Type parent's full name as signature" required maxlength="100">
+                <span class="appform-error" id="err-parent_signature"></span>
+              </div>
+            </div>
+
+            <div class="appform-row appform-row--2">
+              <div class="appform-field">
+                <label class="appform-label" for="declaration_date">Date <span class="req">*</span></label>
+                <input type="date" class="appform-input" id="declaration_date" name="declaration_date" required>
+                <span class="appform-error" id="err-declaration_date"></span>
+              </div>
+              <div class="appform-field">
+                <label class="appform-label" for="declaration_place">Place <span class="req">*</span></label>
+                <input type="text" class="appform-input" id="declaration_place" name="declaration_place" placeholder="e.g. Thrissur" required maxlength="60">
+                <span class="appform-error" id="err-declaration_place"></span>
+              </div>
+            </div>
+
+            <div class="appform-field">
+              <label class="appform-checkbox-label appform-checkbox-label--required">
+                <input type="checkbox" id="agree_declaration" name="agree_declaration" value="1" required>
+                <span>I have read and agree to the declaration above. <span class="req">*</span></span>
+              </label>
+              <span class="appform-error" id="err-agree_declaration"></span>
+            </div>
+
+            <div class="appform-submit-note">
+              <p>After submission, your application will be reviewed by the admissions office. Keep your application number <strong id="summaryAppNo"></strong> safe for follow-up.</p>
+            </div>
+          </div>
+
+          <div class="appform-nav">
+            <button type="button" class="btn btn--outline-dark" onclick="goToStep(7)">← Back</button>
+            <button type="submit" class="btn btn--primary btn--lg" id="submitBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M22 2L11 13"></path><path d="M22 2L15 22 11 13 2 9l20-7z"></path></svg>
+              Submit Application
+            </button>
+          </div>
+        </div>
+
+      </form><!-- end #admissionForm -->
+
+      <!-- SUCCESS MESSAGE (hidden until submission) -->
+      <div class="appform-success" id="successMessage" style="display:none;">
+        <div class="appform-success__icon">✓</div>
+        <h2>Application Submitted Successfully!</h2>
+        <p>Your application number is <strong id="successAppNo"></strong>.</p>
+        <p>A confirmation email has been sent to <strong id="successEmail"></strong>. The admissions office will contact you shortly.</p>
+        <div style="margin-top: var(--space-xl); display:flex; gap: var(--space-md); flex-wrap:wrap; justify-content:center;">
+          <a href="admission.html" class="btn btn--outline-dark">← Back to Admission</a>
+          <a href="../index.html" class="btn btn--primary">Go to Home</a>
+        </div>
+      </div>
+
+    </div><!-- end .container -->
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer__main">
+      <div class="container">
+        <div class="footer__grid">
+          <div><div class="footer__logo"><img src="../assets/images/logo.webp" alt="ELIMS College of Pharmacy"><div class="footer__logo-name">ELIMS College of Pharmacy</div></div><p class="footer__about-text">Established in 2016, ELIMS College of Pharmacy provides quality pharmaceutical education in Thrissur, approved by PCI, DME and affiliated to KUHS.</p><div class="footer__social"><a href="https://www.facebook.com/elimspharmacy.edu" target="_blank" rel="noopener noreferrer" aria-label="Facebook">f</a><a href="https://instagram.com/elims_college_of_pharmacy" target="_blank" rel="noopener noreferrer" aria-label="Instagram">in</a><a href="https://youtube.com/@elimspharmacy" target="_blank" rel="noopener noreferrer" aria-label="YouTube">▶</a></div></div>
+          <div><h4 class="footer__heading">Quick Links</h4><ul class="footer__links"><li><a href="about.html">About Us</a></li><li><a href="b-pharm.html">B. Pharm</a></li><li><a href="pharm-d.html">Pharm.D</a></li><li><a href="pharm-d-pb.html">Pharm.D (PB)</a></li><li><a href="m-pharm-pharmaceutics.html">M.Pharm Pharmaceutics</a></li><li><a href="m-pharm-pharmacy-practice.html">M.Pharm Pharmacy Practice</a></li><li><a href="admission.html">Admission</a></li><li><a href="facilities.html">Facilities</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+          <div><h4 class="footer__heading">Resources</h4><ul class="footer__links"><li><a href="academic-calendar.html">Academic Calendar</a></li><li><a href="departments.html">Departments</a></li><li><a href="committees.html">Committees</a></li><li><a href="iqac.html">IQAC</a></li><li><a href="pta.html">PTA</a></li><li><a href="contact.html">Contact Us</a></li></ul></div>
+          <div><h4 class="footer__heading">Contact Us</h4><div class="footer__contact-item"><div class="footer__contact-icon">📍</div><div class="footer__contact-text"><strong>Address</strong>Ramavarmapuram P O, Villadam,<br>Thrissur — 680631, Kerala</div></div><div class="footer__contact-item"><div class="footer__contact-icon">📞</div><div class="footer__contact-text"><strong>Phone</strong>+91 (0) 487 296 5395<br>+91 79075 55133</div></div><div class="footer__contact-item"><div class="footer__contact-icon">✉️</div><div class="footer__contact-text"><strong>Email</strong><a href="mailto:elimspharmacy@gmail.com">elimspharmacy@gmail.com</a></div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bar"><div class="container"><span class="footer__bar-text">© 2016 – 2026 ELIMS College of Pharmacy. All rights reserved.</span><span class="footer__bar-text"><a href="contact.html">Privacy Policy</a> · <a href="contact.html">Terms</a></span></div></div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    /* ── Application number ───────────────────────────── */
+    function generateAppNo() {
+      var ts = Date.now().toString(36).toUpperCase();
+      var rnd = Math.floor(Math.random() * 10000).toString().padStart(4, '0');
+      return 'ELIMS-2026-' + ts + rnd;
+    }
+    var appNo = generateAppNo();
+    document.getElementById('appNumber').textContent = appNo;
+    document.getElementById('hiddenAppNumber').value = appNo;
+    document.getElementById('summaryAppNo').textContent = appNo;
+
+    function setVal(id, value) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.value = value;
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+
+    function setChecked(id, checked) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.checked = checked;
+      el.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    function makeDummyFile(kind, name) {
+      if (kind === 'jpg') {
+        var jpeg = new Uint8Array([
+          0xFF, 0xD8, 0xFF, 0xE0, 0x00, 0x10, 0x4A, 0x46,
+          0x49, 0x46, 0x00, 0x01, 0x01, 0x00, 0x00, 0x01,
+          0x00, 0x01, 0x00, 0x00, 0xFF, 0xD9
+        ]);
+        return new File([jpeg], name, { type: 'image/jpeg' });
+      }
+      var pdf = '%PDF-1.4\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF';
+      return new File([pdf], name, { type: 'application/pdf' });
+    }
+
+    function attachDummyFile(inputId, kind, fileName) {
+      var input = document.getElementById(inputId);
+      if (!input) return;
+      if (typeof DataTransfer === 'undefined') return;
+      var dt = new DataTransfer();
+      dt.items.add(makeDummyFile(kind, fileName));
+      input.files = dt.files;
+      input.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    function fillDummyData() {
+      var today = new Date().toISOString().split('T')[0];
+
+      setVal('course_applied_for', document.getElementById('course_applied_for').value || 'B.Pharm');
+      setVal('quota', document.getElementById('quota').value || 'Merit');
+
+      setVal('full_name', 'Test Applicant');
+      setVal('date_of_birth', '2006-05-25');
+      setVal('gender', 'Female');
+      setVal('blood_group', 'B+');
+      setVal('aadhaar_number', '123412341234');
+      setVal('religion', 'Hindu');
+      setVal('caste_or_community', 'General');
+      setVal('category', 'General');
+      setVal('email', 'test.applicant@example.com');
+      setVal('nationality', 'Indian');
+      setVal('place_of_birth', 'Thrissur');
+
+      setVal('comm_address', 'Test House, Test Street, Test PO');
+      setVal('comm_district', 'Thrissur');
+      setVal('comm_state', 'Kerala');
+      setVal('comm_pin', '680631');
+      setVal('comm_phone', '9876543210');
+
+      setChecked('sameAddress', true);
+      if (typeof window.toggleSameAddress === 'function') {
+        window.toggleSameAddress(document.getElementById('sameAddress'));
+      }
+
+      setVal('pcb_percentage', '78.40');
+      setVal('keam_rank', '12345');
+      setVal('entrance_roll_no', 'KEAM20261234');
+
+      setVal('parent_name', 'Test Parent');
+      setVal('relationship', 'Father');
+      setVal('occupation', 'Business');
+      setVal('designation', 'Owner');
+      setVal('annual_income', '450000');
+      setVal('official_address', 'Test Office, Thrissur');
+      setVal('parent_phone', '9898989898');
+      setVal('parent_email', 'test.parent@example.com');
+
+      setChecked('hostel_required', true);
+      setChecked('scholarship_received', false);
+      if (typeof window.toggleScholarship === 'function') {
+        window.toggleScholarship(document.getElementById('scholarship_received'));
+      }
+
+      setVal('applicant_signature', 'Test Applicant');
+      setVal('parent_signature', 'Test Parent');
+      setVal('declaration_date', today);
+      setVal('declaration_place', 'Thrissur');
+      setChecked('agree_declaration', true);
+
+      // Required uploads
+      attachDummyFile('applicant_photo', 'jpg', 'dummy-photo.jpg');
+      attachDummyFile('doc_allotment_memo', 'pdf', 'dummy-allotment.pdf');
+      attachDummyFile('doc_fee_receipt', 'pdf', 'dummy-fee-receipt.pdf');
+      attachDummyFile('doc_mark_list', 'pdf', 'dummy-mark-list.pdf');
+      attachDummyFile('doc_tc', 'pdf', 'dummy-transfer-certificate.pdf');
+    }
+
+    document.getElementById('dummyFillBtn').addEventListener('click', function () {
+      fillDummyData();
+      var target = 8;
+      while (currentStep < target) {
+        goToStep(currentStep + 1);
+      }
+      buildSummary();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    /* ── Pre-fill course from URL param ?course= ──────── */
+    var courseMap = {
+      'b-pharm':                  'B.Pharm',
+      'b-pharm-lateral':          'B.Pharm Lateral Entry',
+      'pharm-d':                  'Pharm.D',
+      'pharm-d-pb':               'Pharm.D (PB)',
+      'm-pharm-pharmaceutics':    'M.Pharm Pharmaceutics',
+      'm-pharm-pharmacy-practice':'M.Pharm Pharmacy Practice'
+    };
+    var params = new URLSearchParams(window.location.search);
+    var slug = params.get('course');
+    if (slug && courseMap[slug]) {
+      document.getElementById('course_applied_for').value = courseMap[slug];
+      handleCourseChange();
+    }
+
+    /* ── Course change → show/hide conditional fields ── */
+    document.getElementById('course_applied_for').addEventListener('change', handleCourseChange);
+
+    function handleCourseChange() {
+      var course = document.getElementById('course_applied_for').value;
+      var isLateral = course === 'B.Pharm Lateral Entry';
+      var isPG = course === 'Pharm.D (PB)' || course === 'M.Pharm Pharmaceutics' || course === 'M.Pharm Pharmacy Practice';
+
+      // Academic table rows
+      document.getElementById('dpharmAcadRow').style.display = isLateral ? '' : 'none';
+      document.getElementById('bpharmAcadRow').style.display = isPG ? '' : 'none';
+
+      // D.Pharm marks block
+      document.getElementById('dpharmMarksBlock').style.display = isLateral ? '' : 'none';
+
+      // Entrance exam fields
+      document.getElementById('keamField').style.display = isPG ? 'none' : '';
+      document.getElementById('gpatField').style.display = isPG ? '' : 'none';
+    }
+
+    /* ── Auto-compute age from DOB ───────────────────── */
+    document.getElementById('date_of_birth').addEventListener('change', function () {
+      var dob = new Date(this.value);
+      if (!isNaN(dob)) {
+        var ref = new Date('2026-07-01');
+        var age = ref.getFullYear() - dob.getFullYear();
+        var m = ref.getMonth() - dob.getMonth();
+        if (m < 0 || (m === 0 && ref.getDate() < dob.getDate())) age--;
+        document.getElementById('age').value = age > 0 ? age : '';
+      }
+    });
+
+    /* ── Same address checkbox ───────────────────────── */
+    window.toggleSameAddress = function (cb) {
+      document.getElementById('permanentAddressBlock').style.display = cb.checked ? 'none' : '';
+    };
+
+    /* ── Scholarship toggle ──────────────────────────── */
+    window.toggleScholarship = function (cb) {
+      document.getElementById('scholarshipDetailsBlock').style.display = cb.checked ? '' : 'none';
+    };
+
+    /* ── Photo preview ───────────────────────────────── */
+    document.getElementById('applicant_photo').addEventListener('change', function () {
+      var preview = document.getElementById('photoPreview');
+      preview.innerHTML = '';
+      if (this.files && this.files[0]) {
+        var img = document.createElement('img');
+        img.src = URL.createObjectURL(this.files[0]);
+        img.alt = 'Photo preview';
+        img.className = 'appform-photo-preview';
+        preview.appendChild(img);
+      } else {
+        preview.innerHTML = '<span class="appform-file-placeholder">No file chosen</span>';
+      }
+    });
+
+    /* ── Multi-step navigation ───────────────────────── */
+    var currentStep = 1;
+    var totalSteps = 8;
+
+    window.goToStep = function (target) {
+      if (target > currentStep && !validateStep(currentStep)) return;
+
+      // Hide current panel
+      document.querySelector('[data-panel="' + currentStep + '"]').classList.remove('appform-panel--active');
+      document.querySelector('[data-step="' + currentStep + '"]').classList.remove('appform-step--active');
+
+      // Mark completed
+      if (target > currentStep) {
+        document.querySelector('[data-step="' + currentStep + '"]').classList.add('appform-step--done');
+      }
+
+      currentStep = target;
+
+      // Show new panel
+      document.querySelector('[data-panel="' + currentStep + '"]').classList.add('appform-panel--active');
+      document.querySelector('[data-step="' + currentStep + '"]').classList.remove('appform-step--done');
+      document.querySelector('[data-step="' + currentStep + '"]').classList.add('appform-step--active');
+
+      // Build summary on declaration step
+      if (currentStep === 8) buildSummary();
+
+      // Set today's date on declaration step
+      if (currentStep === 8 && !document.getElementById('declaration_date').value) {
+        document.getElementById('declaration_date').value = new Date().toISOString().split('T')[0];
+      }
+
+      // Scroll to top of form
+      document.getElementById('stepIndicator').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    /* ── Per-step validation ─────────────────────────── */
+    function validateStep(step) {
+      var valid = true;
+
+      // Clear previous errors
+      document.querySelectorAll('[data-panel="' + step + '"] .appform-error').forEach(function (e) {
+        e.textContent = '';
+      });
+      document.querySelectorAll('[data-panel="' + step + '"] .appform-input--error').forEach(function (e) {
+        e.classList.remove('appform-input--error');
+      });
+
+      var panel = document.querySelector('[data-panel="' + step + '"]');
+      var required = panel.querySelectorAll('[required]');
+
+      required.forEach(function (field) {
+        var val = field.type === 'checkbox' ? field.checked : field.value.trim();
+        if (!val) {
+          markError(field, 'This field is required.');
+          valid = false;
+        } else {
+          // Type-specific validation
+          if (field.type === 'email' && !isValidEmail(field.value)) {
+            markError(field, 'Enter a valid email address.');
+            valid = false;
+          }
+          if (field.id === 'aadhaar_number' && field.value && !/^\d{4}\s?\d{4}\s?\d{4}$/.test(field.value)) {
+            markError(field, 'Enter a valid 12-digit Aadhaar number.');
+            valid = false;
+          }
+          if (field.id === 'comm_pin' && !/^\d{6}$/.test(field.value)) {
+            markError(field, 'Enter a valid 6-digit PIN code.');
+            valid = false;
+          }
+        }
+      });
+
+      return valid;
+    }
+
+    function markError(field, msg) {
+      field.classList.add('appform-input--error');
+      var errSpan = document.getElementById('err-' + field.id);
+      if (errSpan) errSpan.textContent = msg;
+    }
+
+    function isValidEmail(email) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    /* ── Build summary for Step 8 ────────────────────── */
+    function buildSummary() {
+      var s = document.getElementById('applicationSummary');
+      var course = document.getElementById('course_applied_for').value || '—';
+      var quota = document.getElementById('quota').value || '—';
+      var name = document.getElementById('full_name').value || '—';
+      var dob = document.getElementById('date_of_birth').value || '—';
+      var email = document.getElementById('email').value || '—';
+      var phone = document.getElementById('comm_phone').value || '—';
+      var appNoVal = document.getElementById('hiddenAppNumber').value;
+
+      document.getElementById('successEmail').textContent = email;
+
+      s.innerHTML = '<div class="appform-summary__grid">' +
+        summaryItem('Application No.', appNoVal) +
+        summaryItem('Course', course) +
+        summaryItem('Quota', quota) +
+        summaryItem('Applicant Name', name) +
+        summaryItem('Date of Birth', dob) +
+        summaryItem('Email', email) +
+        summaryItem('Phone', phone) +
+        '</div>';
+    }
+
+    function summaryItem(label, value) {
+      return '<div class="appform-summary__item"><span class="appform-summary__label">' + label + '</span><span class="appform-summary__value">' + value + '</span></div>';
+    }
+
+    /* ── Form submission ─────────────────────────────── */
+    document.getElementById('admissionForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (window.location.protocol === 'file:') {
+        alert('This form must be opened through the Node server. Use: http://localhost:8080/pages/apply-online.html');
+        return;
+      }
+
+      if (document.getElementById('dummy_mode').checked) {
+        fillDummyData();
+      }
+
+      if (!validateStep(8)) return;
+
+      var btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+
+      var formData = new FormData(this);
+
+      fetch('/submit-application', {
+        method: 'POST',
+        body: formData
+      })
+      .then(function (res) {
+        if (!res.ok) {
+          throw new Error('Server responded with status ' + res.status);
+        }
+        return res.json();
+      })
+      .then(function (data) {
+        if (data.success) {
+          document.getElementById('admissionForm').style.display = 'none';
+          document.getElementById('stepIndicator').style.display = 'none';
+          document.getElementById('appNumber').closest('.appform-banner').style.display = 'none';
+          document.getElementById('successAppNo').textContent = data.application_number;
+          document.getElementById('successMessage').style.display = 'block';
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M22 2L11 13"></path><path d="M22 2L15 22 11 13 2 9l20-7z"></path></svg> Submit Application';
+          alert('Submission error: ' + (data.message || 'Please try again or contact the admissions office.'));
+        }
+      })
+      .catch(function (err) {
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><path d="M22 2L11 13"></path><path d="M22 2L15 22 11 13 2 9l20-7z"></path></svg> Submit Application';
+        if (window.location.protocol === 'file:') {
+          alert('You are opening the page as a file. Please use the Node server URL: http://localhost:8080/pages/apply-online.html');
+          return;
+        }
+        alert('Submission failed: ' + (err && err.message ? err.message : 'Network/server error. Please check that Node server is running.'));
+      });
+    });
+
+  })();
+  </script>
+</body>
+</html>

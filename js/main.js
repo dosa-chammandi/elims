@@ -10,7 +10,84 @@ document.addEventListener('DOMContentLoaded', () => {
   initCarousel();
   initCounters();
   initLightbox();
+  initManagedSiteContent();
 });
+
+async function initManagedSiteContent() {
+  try {
+    const res = await fetch('/api/site-content', { cache: 'no-store' });
+    if (!res.ok) return;
+    const config = await res.json();
+    applyManagedCarousel(config);
+    applyManagedGallery(config);
+    showAdmissionPopup(config);
+  } catch (_) {
+    // Fail silently to preserve static fallback content
+  }
+}
+
+function applyManagedCarousel(config) {
+  const images = Array.isArray(config && config.carousel) ? config.carousel : [];
+  if (!images.length) return;
+
+  const slides = document.querySelectorAll('#heroCarousel .carousel__slide .carousel__bg img');
+  if (!slides.length) return;
+
+  slides.forEach((img, idx) => {
+    if (images[idx]) {
+      img.src = images[idx];
+    }
+  });
+}
+
+function applyManagedGallery(config) {
+  const images = Array.isArray(config && config.gallery) ? config.gallery : [];
+  const grid = document.querySelector('.gallery-page-grid');
+  if (!grid || !images.length) return;
+
+  grid.innerHTML = images.map((src, idx) => {
+    const safeSrc = String(src).replace(/"/g, '&quot;');
+    return '<div class="gallery-page-item" data-lightbox>'
+      + '<img src="' + safeSrc + '" alt="Gallery image ' + (idx + 1) + '" loading="lazy">'
+      + '<div class="gallery-page-item__overlay">🔍</div>'
+      + '</div>';
+  }).join('');
+
+  initLightbox();
+}
+
+function showAdmissionPopup(config) {
+  const popup = config && config.popup ? config.popup : null;
+  if (!popup || !popup.enabled || !popup.image) return;
+
+  const seenKey = 'elims_admission_popup_seen';
+  if (sessionStorage.getItem(seenKey) === '1') return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'admission-popup';
+  wrapper.innerHTML = '<div class="admission-popup__backdrop"></div>'
+    + '<div class="admission-popup__dialog" role="dialog" aria-modal="true" aria-label="Admission update">'
+    + '<button type="button" class="admission-popup__close" aria-label="Close">×</button>'
+    + '<a class="admission-popup__link" href="' + (popup.link || '/pages/admission.html') + '">'
+    + '<img src="' + popup.image + '" alt="' + (popup.alt || 'Admission update').replace(/"/g, '&quot;') + '">'
+    + '</a>'
+    + '</div>';
+
+  function closePopup() {
+    sessionStorage.setItem(seenKey, '1');
+    wrapper.remove();
+  }
+
+  wrapper.querySelector('.admission-popup__close').addEventListener('click', closePopup);
+  wrapper.querySelector('.admission-popup__backdrop').addEventListener('click', closePopup);
+  wrapper.addEventListener('click', (e) => {
+    if (e.target.classList.contains('admission-popup__link')) {
+      sessionStorage.setItem(seenKey, '1');
+    }
+  });
+
+  document.body.appendChild(wrapper);
+}
 
 /* --- Mobile Navigation --- */
 function initNavigation() {
@@ -255,13 +332,16 @@ function initLightbox() {
   const prevBtn = lightbox.querySelector('.lightbox__nav--prev');
   const nextBtn = lightbox.querySelector('.lightbox__nav--next');
 
-  const galleryItems = document.querySelectorAll('.gallery-item');
+  const galleryItems = document.querySelectorAll('.gallery-item, .gallery-page-item[data-lightbox]');
   let currentIndex = 0;
   const images = [];
 
   galleryItems.forEach((item, index) => {
     const img = item.querySelector('img');
     if (img) images.push(img.src);
+
+    if (item.dataset.lbBound === '1') return;
+    item.dataset.lbBound = '1';
 
     item.addEventListener('click', () => {
       currentIndex = index;

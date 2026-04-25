@@ -2014,3 +2014,512 @@ p:last-child {
 [data-aos-delay="200"] { transition-delay: 0.2s; }
 [data-aos-delay="300"] { transition-delay: 0.3s; }
 [data-aos-delay="400"] { transition-delay: 0.4s; }
+
+/* ==============================
+   ONLINE ADMISSION FORM
+   ============================== */
+
+/* Application number banner */
+.appform-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  background: var(--primary);
+  color: var(--white);
+  padding: var(--space-md) var(--space-xl);
+  border-radius: var(--border-radius-lg);
+  margin-bottom: var(--space-xl);
+}
+.appform-banner__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.6);
+  display: block;
+}
+.appform-banner__number {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--gold);
+  display: block;
+}
+.appform-banner__note {
+  font-size: 0.8125rem;
+  color: rgba(255,255,255,0.6);
+}
+
+/* Step indicator */
+.appform-steps {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--space-2xl);
+  overflow-x: auto;
+  padding-bottom: var(--space-sm);
+}
+.appform-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  cursor: default;
+}
+.appform-step__dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--bg-alt);
+  border: 2px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+}
+.appform-step__label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  transition: color var(--transition);
+}
+.appform-step--active .appform-step__dot {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--white);
+  box-shadow: 0 0 0 4px rgba(46,139,87,0.15);
+}
+.appform-step--active .appform-step__label {
+  color: var(--accent);
+}
+.appform-step--done .appform-step__dot {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: var(--white);
+}
+.appform-step--done .appform-step__dot::before {
+  content: '✓';
+}
+.appform-step--done .appform-step__dot { font-size: 0; }
+.appform-step--done .appform-step__dot::before { font-size: 0.875rem; }
+.appform-step__connector {
+  flex: 1;
+  height: 2px;
+  background: var(--border);
+  margin: 0 4px;
+  margin-bottom: 20px;
+  min-width: 16px;
+}
+
+/* Form panels */
+.appform-panel {
+  display: none;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-2xl);
+}
+.appform-panel--active {
+  display: block;
+}
+.appform-panel__header {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border);
+}
+.appform-panel__title {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-xs);
+}
+.appform-panel__desc {
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  margin: 0;
+}
+
+/* Fields layout */
+.appform-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+.appform-row {
+  display: grid;
+  gap: var(--space-lg);
+}
+.appform-row--2 { grid-template-columns: repeat(2, 1fr); }
+.appform-row--3 { grid-template-columns: repeat(3, 1fr); }
+.appform-field--span2 { grid-column: span 2; }
+
+.appform-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--primary);
+  margin-bottom: 5px;
+}
+.req {
+  color: var(--accent);
+}
+.appform-hint {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin: 2px 0 6px;
+}
+.appform-opt {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Inputs */
+.appform-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--text);
+  background: var(--white);
+  border: 1.5px solid var(--border);
+  border-radius: var(--border-radius);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  appearance: none;
+}
+.appform-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(46,139,87,0.12);
+}
+.appform-input--error {
+  border-color: #e74c3c;
+}
+.appform-input--error:focus {
+  box-shadow: 0 0 0 3px rgba(231,76,60,0.12);
+}
+.appform-textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+.appform-input--sm {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.875rem;
+}
+.appform-signature-input {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  font-style: italic;
+}
+select.appform-input {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235C6378' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2.25rem;
+  cursor: pointer;
+}
+
+/* Error messages */
+.appform-error {
+  display: block;
+  font-size: 0.8125rem;
+  color: #e74c3c;
+  margin-top: 3px;
+  min-height: 1em;
+}
+
+/* Section dividers and titles */
+.appform-section-title {
+  font-size: 1rem;
+  color: var(--primary);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--accent);
+  display: inline-block;
+  margin-bottom: var(--space-sm);
+}
+.appform-section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--space-sm) 0;
+}
+
+/* Checkbox labels */
+.appform-checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  cursor: pointer;
+  font-size: 0.9375rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.appform-checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* Same address toggle */
+.appform-same-address {
+  background: var(--bg);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--border-radius);
+  border: 1px dashed var(--border);
+}
+
+/* File upload */
+.appform-file-wrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+.appform-file {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.875rem;
+  border: 1.5px solid var(--border);
+  border-radius: var(--border-radius);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+  max-width: 260px;
+}
+.appform-file:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.appform-file-preview {
+  display: flex;
+  align-items: center;
+}
+.appform-file-placeholder {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+.appform-photo-preview {
+  width: 80px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: var(--border-radius);
+  border: 2px solid var(--border);
+}
+
+/* Documents grid */
+.appform-docs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+.appform-doc-item {
+  background: var(--bg);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border);
+}
+.appform-doc-item .appform-label {
+  margin-bottom: var(--space-sm);
+}
+
+/* Academic table */
+.appform-table-wrap {
+  overflow-x: auto;
+}
+.appform-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+.appform-table th {
+  background: var(--primary);
+  color: var(--white);
+  padding: 0.5rem 0.625rem;
+  text-align: left;
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.appform-table td {
+  padding: 0.5rem 0.375rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+.appform-table tr:last-child td {
+  border-bottom: none;
+}
+.appform-table tr:nth-child(even) td {
+  background: var(--bg);
+}
+.appform-exam-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--primary);
+  white-space: nowrap;
+}
+
+/* Summary (Step 8) */
+.appform-summary {
+  background: var(--bg);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xl);
+  border: 1px solid var(--border);
+  margin-bottom: var(--space-xl);
+}
+.appform-summary__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md) var(--space-xl);
+}
+.appform-summary__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.appform-summary__label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.appform-summary__value {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--primary);
+}
+
+/* Declaration box */
+.appform-declaration-box {
+  background: #fff8e6;
+  border: 1px solid var(--gold);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-xl);
+}
+.appform-declaration-box h3 {
+  margin-bottom: var(--space-sm);
+  font-size: 1rem;
+}
+.appform-declaration-box p {
+  font-size: 0.9375rem;
+  color: var(--text);
+  line-height: 1.7;
+}
+
+.appform-submit-note {
+  background: var(--bg);
+  border-left: 4px solid var(--accent);
+  padding: var(--space-md) var(--space-lg);
+  border-radius: 0 var(--border-radius) var(--border-radius) 0;
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+}
+
+/* Navigation buttons row */
+.appform-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--border);
+}
+
+/* Success message */
+.appform-success {
+  text-align: center;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--border-radius-lg);
+  padding: var(--space-4xl) var(--space-2xl);
+}
+.appform-success__icon {
+  width: 64px;
+  height: 64px;
+  background: var(--accent);
+  color: var(--white);
+  border-radius: 50%;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-xl);
+  font-weight: 700;
+}
+.appform-success h2 {
+  margin-bottom: var(--space-md);
+}
+.appform-success p {
+  color: var(--text-muted);
+  font-size: 1rem;
+  margin-bottom: var(--space-sm);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .appform-row--2,
+  .appform-row--3 { grid-template-columns: 1fr; }
+  .appform-field--span2 { grid-column: span 1; }
+  .appform-docs-grid { grid-template-columns: 1fr; }
+  .appform-summary__grid { grid-template-columns: 1fr; }
+  .appform-panel { padding: var(--space-lg); }
+  .appform-step__label { display: none; }
+  .appform-banner { flex-direction: column; align-items: flex-start; }
+}
+
+/* Admission popup */
+.admission-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+.admission-popup__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 21, 39, 0.72);
+}
+.admission-popup__dialog {
+  position: relative;
+  width: min(92vw, 720px);
+  margin: 4vh auto 0;
+  background: var(--white);
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+.admission-popup__link {
+  display: block;
+}
+.admission-popup__link img {
+  display: block;
+  width: 100%;
+  max-height: 82vh;
+  object-fit: contain;
+  background: #f8fafc;
+}
+.admission-popup__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(27, 42, 74, 0.9);
+  color: #fff;
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+}
