@@ -344,7 +344,7 @@ describe('Popup Image File on Disk', () => {
       console.log('    ' + colorText('yellow', 'No popup image set — skipping disk check'));
       return;
     }
-    const diskPath = path.join('/home/dosa/projects/elims', imgPath);
+    const diskPath = path.join(process.cwd(), imgPath);
     assert.ok(fs.existsSync(diskPath), `Image file not found on disk: ${diskPath}`);
     console.log('    ' + colorText('cyan', `Popup image exists: ${diskPath}`));
   });
