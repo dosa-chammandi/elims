@@ -14,7 +14,7 @@ services:
     # seed the disk with the repo's initial content.
     startCommand: |
       set -e
-      mkdir -p /var/data/data /var/data/managed-images
+      mkdir -p /var/data/data /var/data/managed-images /var/data/application-uploads
       # Seed disk on first deploy (only if empty)
       if [ -z "$(ls -A /var/data/data 2>/dev/null)" ] && [ -d data ] && [ ! -L data ]; then
         cp -r data/. /var/data/data/
@@ -22,10 +22,14 @@ services:
       if [ -z "$(ls -A /var/data/managed-images 2>/dev/null)" ] && [ -d assets/images/managed ] && [ ! -L assets/images/managed ]; then
         cp -r assets/images/managed/. /var/data/managed-images/
       fi
-      rm -rf data assets/images/managed
-      mkdir -p assets/images
+      if [ -z "$(ls -A /var/data/application-uploads 2>/dev/null)" ] && [ -d uploads/applications ] && [ ! -L uploads/applications ]; then
+        cp -r uploads/applications/. /var/data/application-uploads/
+      fi
+      rm -rf data assets/images/managed uploads/applications
+      mkdir -p assets/images uploads
       ln -sfn /var/data/data data
       ln -sfn /var/data/managed-images assets/images/managed
+      ln -sfn /var/data/application-uploads uploads/applications
       node server.js
     healthCheckPath: /healthz
     autoDeploy: true
