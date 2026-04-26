@@ -1,0 +1,56 @@
+# Render.com Blueprint — one-click deploy
+# Push to GitHub, then in Render: New + → Blueprint → pick this repo.
+# After first deploy, set ADMIN_PASS_HASH and SMTP_PASS in the dashboard.
+
+services:
+  - type: web
+    name: elims
+    runtime: node
+    plan: starter           # change to 'free' for trial; starter has persistent disk
+    region: singapore        # closest to India users; options: oregon, frankfurt, ohio, singapore
+    buildCommand: npm ci --omit=dev
+    # Symlink data/ and assets/images/managed/ to the persistent disk so they
+    # survive deploys (Render allows only one disk per service). On first run,
+    # seed the disk with the repo's initial content.
+    startCommand: |
+      set -e
+      mkdir -p /var/data/data /var/data/managed-images
+      # Seed disk on first deploy (only if empty)
+      if [ -z "$(ls -A /var/data/data 2>/dev/null)" ] && [ -d data ] && [ ! -L data ]; then
+        cp -r data/. /var/data/data/
+      fi
+      if [ -z "$(ls -A /var/data/managed-images 2>/dev/null)" ] && [ -d assets/images/managed ] && [ ! -L assets/images/managed ]; then
+        cp -r assets/images/managed/. /var/data/managed-images/
+      fi
+      rm -rf data assets/images/managed
+      mkdir -p assets/images
+      ln -sfn /var/data/data data
+      ln -sfn /var/data/managed-images assets/images/managed
+      node server.js
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: PORT
+        value: "8080"
+      - key: SESSION_SECRET
+        generateValue: true   # Render auto-generates a strong secret
+      - key: ADMIN_USER
+        value: admin
+      - key: ADMIN_PASS_HASH
+        sync: false            # set manually in dashboard
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+    disk:
+      name: elims-data
+      mountPath: /var/data
+      sizeGB: 1

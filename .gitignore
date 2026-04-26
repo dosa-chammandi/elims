@@ -3,3 +3,4 @@ uploads/tmp/
 *.log
 npm-debug.log*
 .env
+*:Zone.Identifier

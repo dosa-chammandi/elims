@@ -5,10 +5,22 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node --watch server.js"
+    "dev": "node --watch server.js",
+    "test": "node test/e2e.js",
+    "hash-password": "node scripts/hash-password.js"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
-    "express": "^4.19.2",    "express-session": "^1.18.1",    "multer": "^2.1.1",
+    "bcryptjs": "^3.0.3",
+    "compression": "^1.8.1",
+    "dotenv": "^17.4.2",
+    "express": "^4.19.2",
+    "express-rate-limit": "^8.4.1",
+    "express-session": "^1.18.1",
+    "helmet": "^8.1.0",
+    "multer": "^2.1.1",
     "nodemailer": "^8.0.6"
   }
 }

@@ -6,24 +6,32 @@
  *
  * Run:  node server.js       (or: npm start)
  *
- * Environment variables (optional):
- *   PORT           — HTTP port (default 8080)
- *   ADMIN_USER     — Admin username (default: admin)
- *   ADMIN_PASS     — Admin password (default: elims@2026)  ← CHANGE IN PRODUCTION
- *   SESSION_SECRET — Cookie signing secret (auto-generated if not set)
- *   SMTP_HOST      — SMTP hostname (default: smtp.gmail.com)
- *   SMTP_PORT      — SMTP port (default: 587)
- *   SMTP_USER      — SMTP username / sender email
- *   SMTP_PASS      — SMTP password / app password
+ * Environment variables (see .env.example):
+ *   PORT                 — HTTP port (default 8080)
+ *   NODE_ENV             — 'production' enables secure cookies + trust proxy
+ *   ADMIN_USER           — Admin username (default: admin)
+ *   ADMIN_PASS_HASH      — bcrypt hash of admin password (PREFERRED)
+ *   ADMIN_PASS           — Plain-text fallback (DEV ONLY; required if hash unset)
+ *   SESSION_SECRET       — Cookie signing secret (REQUIRED in production)
+ *   TRUST_PROXY          — '1' to trust X-Forwarded-* (Render/Fly/Heroku/etc.)
+ *   SMTP_HOST/PORT/USER/PASS — SMTP credentials
  */
 
-const express    = require('express');
-const session    = require('express-session');
-const multer     = require('multer');
-const nodemailer = require('nodemailer');
-const path       = require('path');
-const fs         = require('fs');
-const crypto     = require('crypto');
+require('dotenv').config();
+
+const express      = require('express');
+const session      = require('express-session');
+const multer       = require('multer');
+const nodemailer   = require('nodemailer');
+const path         = require('path');
+const fs           = require('fs');
+const crypto       = require('crypto');
+const helmet       = require('helmet');
+const compression  = require('compression');
+const rateLimit    = require('express-rate-limit');
+const bcrypt       = require('bcryptjs');
+
+const IS_PROD = process.env.NODE_ENV === 'production';
 
 /* ────────────────────────────────────────────────────────
    EMAIL CONFIG — update before deploying to production
@@ -44,8 +52,32 @@ const REPLY_TO     = ADMIN_EMAIL;
 /* ────────────────────────────────────────────────────────
    ADMIN CREDENTIALS
    ──────────────────────────────────────────────────────── */
-const ADMIN_USER = process.env.ADMIN_USER || 'admin';
-const ADMIN_PASS = process.env.ADMIN_PASS || 'elims@2026';
+const ADMIN_USER      = process.env.ADMIN_USER || 'admin';
+const ADMIN_PASS_HASH = process.env.ADMIN_PASS_HASH || '';
+const ADMIN_PASS      = process.env.ADMIN_PASS || (ADMIN_PASS_HASH ? '' : 'elims@2026');
+
+if (IS_PROD && !ADMIN_PASS_HASH) {
+  console.warn('[SECURITY] ADMIN_PASS_HASH is not set in production. Generate one with: npm run hash-password');
+}
+if (IS_PROD && !process.env.SESSION_SECRET) {
+  console.error('[FATAL] SESSION_SECRET must be set in production. Refusing to start.');
+  process.exit(1);
+}
+
+/** Verify a submitted password against ADMIN_PASS_HASH (preferred) or ADMIN_PASS. */
+function verifyAdminPassword(submitted) {
+  if (typeof submitted !== 'string' || !submitted) return false;
+  if (ADMIN_PASS_HASH) {
+    try { return bcrypt.compareSync(submitted, ADMIN_PASS_HASH); }
+    catch { return false; }
+  }
+  if (!ADMIN_PASS) return false;
+  // constant-time compare for plain-text fallback
+  const a = Buffer.from(submitted);
+  const b = Buffer.from(ADMIN_PASS);
+  if (a.length !== b.length) return false;
+  return crypto.timingSafeEqual(a, b);
+}
 
 /* ────────────────────────────────────────────────────────
    DATA STORAGE — applications persisted as JSON
@@ -122,12 +154,58 @@ function saveSiteContent(data) {
 const app  = express();
 const PORT = process.env.PORT || 8080;
 
+/* ── Trust reverse proxy (Render/Fly/Heroku set X-Forwarded-*) ── */
+if (process.env.TRUST_PROXY === '1' || IS_PROD) {
+  app.set('trust proxy', 1);
+}
+
+/* ── Security headers ── */
+app.use(helmet({
+  contentSecurityPolicy: false, // existing inline scripts/styles in admin pages
+  crossOriginEmbedderPolicy: false,
+}));
+
+/* ── Gzip compression ── */
+app.use(compression());
+
+/* ── Health check (for uptime probes / load balancers) ── */
+app.get('/healthz', (_req, res) => {
+  res.json({
+    status: 'ok',
+    uptime: Math.floor(process.uptime()),
+    timestamp: new Date().toISOString(),
+  });
+});
+
+/* ── Rate limiters ── */
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,    // 15 min
+  max: 10,                     // 10 attempts per IP per window
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: 'Too many login attempts. Please try again in 15 minutes.',
+});
+
+const submitLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,    // 1 hour
+  max: 30,                     // 30 submissions per IP per hour
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many submissions. Please try again later.' },
+});
+
 /* ── Session middleware ── */
 app.use(session({
+  name:              'elims.sid',
   secret:            process.env.SESSION_SECRET || crypto.randomBytes(32).toString('hex'),
   resave:            false,
   saveUninitialized: false,
-  cookie:            { httpOnly: true, sameSite: 'strict', maxAge: 8 * 60 * 60 * 1000 },
+  cookie: {
+    httpOnly: true,
+    sameSite: 'strict',
+    secure:   IS_PROD,
+    maxAge:   8 * 60 * 60 * 1000,
+  },
 }));
 
 /* ── Body parsers (for admin login form) ── */
@@ -149,22 +227,26 @@ const MAGIC = {
   pdf:  Buffer.from([0x25, 0x50, 0x44, 0x46]),             // %PDF
   png:  Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]),
   jpeg: Buffer.from([0xFF, 0xD8, 0xFF]),
+  webpRiff: Buffer.from([0x52, 0x49, 0x46, 0x46]),         // RIFF
+  webpSig:  Buffer.from([0x57, 0x45, 0x42, 0x50]),         // WEBP
 };
 
 function detectMime(filePath) {
-  const buf = Buffer.alloc(8);
+  const buf = Buffer.alloc(12);
   const fd  = fs.openSync(filePath, 'r');
-  fs.readSync(fd, buf, 0, 8, 0);
+  fs.readSync(fd, buf, 0, 12, 0);
   fs.closeSync(fd);
   if (buf.slice(0, 4).equals(MAGIC.pdf))  return 'application/pdf';
   if (buf.slice(0, 8).equals(MAGIC.png))  return 'image/png';
   if (buf.slice(0, 3).equals(MAGIC.jpeg)) return 'image/jpeg';
+  if (buf.slice(0, 4).equals(MAGIC.webpRiff) && buf.slice(8, 12).equals(MAGIC.webpSig)) return 'image/webp';
   return null;
 }
 
 function mimeToExt(mime) {
   if (mime === 'application/pdf') return 'pdf';
   if (mime === 'image/png')       return 'png';
+  if (mime === 'image/webp')      return 'webp';
   return 'jpg';
 }
 
@@ -490,13 +572,13 @@ function handleSubmit(req, res) {
   return jsonResp(res, true, 'Application submitted successfully.', appNo);
 }
 
-app.post('/submit-application',     (req, res) => upload(req, res, err => {
+app.post('/submit-application',     submitLimiter, (req, res) => upload(req, res, err => {
   if (err) return jsonResp(res, false, `Upload error: ${err.message}`);
   handleSubmit(req, res);
 }));
 
 // Also accept requests to the old .php path so existing links keep working
-app.post('/submit-application.php', (req, res) => upload(req, res, err => {
+app.post('/submit-application.php', submitLimiter, (req, res) => upload(req, res, err => {
   if (err) return jsonResp(res, false, `Upload error: ${err.message}`);
   handleSubmit(req, res);
 }));
@@ -508,9 +590,11 @@ app.get('/api/site-content', (_req, res) => {
   res.json(loadSiteContent());
 });
 
+const SITE_MEDIA_MAX_SIZE = 30 * 1024 * 1024; // 30 MB
+
 const siteMediaUpload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
+  limits: { fileSize: SITE_MEDIA_MAX_SIZE },
 }).single('image');
 
 app.get('/admin/api/site-content', requireAdmin, (_req, res) => {
@@ -529,7 +613,12 @@ app.put('/admin/api/site-content/popup', requireAdmin, express.json(), (req, res
 
 app.post('/admin/api/site-media/upload', requireAdmin, (req, res) => {
   siteMediaUpload(req, res, err => {
-    if (err) return res.status(400).json({ error: err.message || 'Upload failed' });
+    if (err) {
+      if (err instanceof multer.MulterError && err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ error: `File too large. Please upload up to ${Math.floor(SITE_MEDIA_MAX_SIZE / (1024 * 1024))} MB.` });
+      }
+      return res.status(400).json({ error: err.message || 'Upload failed' });
+    }
     const type = String((req.body && req.body.type) || '').trim();
     if (!['carousel', 'gallery', 'popup'].includes(type)) {
       if (req.file && req.file.path && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
@@ -540,7 +629,7 @@ app.post('/admin/api/site-media/upload', requireAdmin, (req, res) => {
     const mime = detectMime(req.file.path);
     if (!mime || !mime.startsWith('image/')) {
       fs.unlinkSync(req.file.path);
-      return res.status(400).json({ error: 'Only JPG/PNG images are allowed' });
+      return res.status(400).json({ error: 'Only JPG, PNG, or WEBP images are allowed' });
     }
 
     const ext = mimeToExt(mime);
@@ -574,11 +663,21 @@ app.delete('/admin/api/site-media', requireAdmin, express.json(), (req, res) => 
   }
 
   const config = loadSiteContent();
+  // Check the path actually exists in config before removing
+  let found = false;
   if (type === 'popup') {
-    if (config.popup.image === relPath) config.popup.image = '';
+    found = config.popup.image === relPath;
+    if (found) config.popup.image = '';
   } else {
+    const before = config[type].length;
     config[type] = config[type].filter(p => p !== relPath);
+    found = config[type].length < before;
   }
+
+  if (!found) {
+    return res.status(404).json({ error: 'Media path not found in config' });
+  }
+
   saveSiteContent(config);
 
   const abs = path.resolve(__dirname, '.' + relPath);
@@ -606,9 +705,9 @@ app.get('/admin/login', (req, res) => {
   res.send(adminLoginHTML(err));
 });
 
-app.post('/admin/login', (req, res) => {
+app.post('/admin/login', loginLimiter, (req, res) => {
   const { username, password } = req.body || {};
-  if (username === ADMIN_USER && password === ADMIN_PASS) {
+  if (username === ADMIN_USER && verifyAdminPassword(password)) {
     req.session.adminLoggedIn = true;
     res.redirect('/admin');
   } else {
@@ -1168,29 +1267,79 @@ function adminSiteHTML() {
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Site Manager — ELIMS Admin</title>
 <style>
+:root{--ink:#0f172a;--muted:#64748b;--brand:#1B2A4A;--brand-2:#2c3e6e;--ok:#2E8B57;--line:#dbe3ee;--paper:#f8fafc;--white:#fff}
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Inter,system-ui,sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}
+body{font-family:"Segoe UI",Tahoma,Geneva,Verdana,sans-serif;background:linear-gradient(180deg,#eef4fb 0%,#f8fafc 30%,#f8fafc 100%);color:var(--ink);min-height:100vh}
 a{text-decoration:none;color:inherit}
-.hdr{background:#1B2A4A;color:#fff;display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.5rem}
-.links{display:flex;gap:.6rem}
-.btn-link{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:.4rem .9rem;border-radius:6px;font-size:.85rem}
-.main{max-width:1150px;margin:0 auto;padding:1.5rem}
-.card{background:#fff;border-radius:12px;padding:1rem 1.1rem;box-shadow:0 1px 8px rgba(0,0,0,.06);margin-bottom:1rem}
-.card h2{font-size:1rem;color:#1B2A4A;margin-bottom:.75rem}
+.hdr{background:linear-gradient(135deg,var(--brand),#24355b);color:#fff;display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem 1.4rem;position:sticky;top:0;z-index:110;box-shadow:0 10px 26px rgba(20,35,67,.2)}
+.links{display:flex;gap:.6rem;align-items:center}
+.btn-link{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);padding:.45rem .9rem;border-radius:8px;font-size:.85rem;font-weight:600}
+.main{max-width:1150px;margin:0 auto;padding:1.25rem}
+.card{background:var(--white);border-radius:14px;padding:1rem 1.1rem;box-shadow:0 4px 16px rgba(15,23,42,.07);border:1px solid #edf2f7;margin-bottom:1rem}
+.card h2{font-size:1rem;color:var(--brand);margin-bottom:.75rem}
 .row{display:flex;gap:.6rem;flex-wrap:wrap;align-items:center}
-input[type=file], input[type=text]{border:1px solid #dbe3ee;border-radius:8px;padding:.55rem .7rem;background:#fff}
+input[type=file], input[type=text]{border:1px solid var(--line);border-radius:10px;padding:.62rem .74rem;background:var(--white);font-size:.9rem;min-height:44px}
 input[type=text]{min-width:260px}
-button{border:none;border-radius:8px;padding:.55rem .85rem;cursor:pointer;font-weight:600}
-.btn-primary{background:#2E8B57;color:#fff}
+button{border:none;border-radius:10px;padding:.62rem .95rem;cursor:pointer;font-weight:700;min-height:44px}
+.btn-primary{background:var(--ok);color:#fff}
 .btn-danger{background:#ef4444;color:#fff}
 .btn-muted{background:#e2e8f0;color:#334155}
-.hint{font-size:.82rem;color:#64748b;margin-top:.45rem}
+.hint{font-size:.82rem;color:var(--muted);margin-top:.45rem;line-height:1.4}
 .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:.8rem;margin-top:.9rem}
-.item{border:1px solid #e2e8f0;border-radius:10px;padding:.5rem;background:#f8fafc}
+.item{border:1px solid var(--line);border-radius:10px;padding:.5rem;background:var(--paper)}
 .thumb{width:100%;height:110px;object-fit:cover;border-radius:6px;background:#e2e8f0}
+.item .meta{display:flex;align-items:center;justify-content:space-between;gap:.4rem;margin-top:.45rem}
+.item .index{display:inline-flex;align-items:center;justify-content:center;min-width:1.6rem;height:1.6rem;padding:0 .35rem;border-radius:999px;background:var(--brand);color:#fff;font-size:.76rem;font-weight:700}
+.item .filename{font-size:.75rem;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .item .actions{display:flex;justify-content:flex-end;margin-top:.45rem}
-.status{font-size:.84rem;color:#166534;font-weight:600;min-height:1.2em}
-@media (max-width:700px){.row{flex-direction:column;align-items:stretch} input[type=text]{min-width:0;width:100%}}
+.status{font-size:.84rem;color:#166534;font-weight:700;min-height:1.2em;padding-bottom:.5rem}
+/* Page-level save bar */
+.save-bar{position:sticky;bottom:0;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-top:1px solid var(--line);box-shadow:0 -6px 18px rgba(15,23,42,.08);padding:.75rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.8rem;flex-wrap:wrap;z-index:100}
+.save-bar__label{font-size:.84rem;color:#475569;font-weight:600}
+.save-bar__btn{background:linear-gradient(135deg,var(--brand),var(--brand-2));color:#fff;padding:.66rem 1.55rem;border-radius:10px;font-size:.92rem;font-weight:700;cursor:pointer;outline:none;border:none;transition:opacity .15s,transform .1s;box-shadow:0 8px 20px rgba(27,42,74,.28)}
+.save-bar__btn:hover{opacity:.9}
+.save-bar__btn:focus{outline:none}
+.save-bar__btn:active{transform:scale(.97);opacity:.85}
+/* Popup settings block */
+.popup-settings{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:1rem 1.05rem;margin-bottom:.9rem}
+.popup-settings__title{font-size:.8rem;text-transform:uppercase;letter-spacing:.7px;font-weight:800;color:#64748b;margin-bottom:.72rem}
+.popup-toggle-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:.75rem}
+.toggle-switch{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;border-radius:24px;background:#cbd5e1;cursor:pointer;transition:background .2s}
+.toggle-slider:before{content:'';position:absolute;width:18px;height:18px;left:3px;bottom:3px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.toggle-switch input:checked+.toggle-slider{background:var(--ok)}
+.toggle-switch input:checked+.toggle-slider:before{transform:translateX(20px)}
+.toggle-label{font-weight:700;font-size:.9rem;color:#1e293b;cursor:pointer;user-select:none}
+.toggle-badge{font-size:.75rem;font-weight:800;border-radius:99px;padding:.18rem .62rem}
+.toggle-badge--on{background:#dcfce7;color:#166534}
+.toggle-badge--off{background:#f1f5f9;color:#94a3b8}
+.link-row{display:flex;align-items:center;gap:.55rem;flex-wrap:wrap}
+.link-row label{font-size:.82rem;font-weight:700;color:#475569;white-space:nowrap}
+.link-row input{flex:1;min-width:180px}
+.popup-upload-row{border-top:1px dashed var(--line);margin-top:.85rem;padding-top:.85rem}
+.popup-upload-row .row-label{font-size:.82rem;font-weight:700;color:#475569;margin-bottom:.45rem}
+@media (max-width:900px){
+  .hdr{padding:.9rem 1rem}
+  .main{padding:1rem}
+  .list{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:700px){
+  .hdr{flex-direction:column;align-items:flex-start}
+  .links{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+  .btn-link{text-align:center}
+  .main{padding:.8rem .72rem 5.3rem}
+  .card{padding:.9rem .82rem;border-radius:12px}
+  .row{flex-direction:column;align-items:stretch}
+  input[type=file], input[type=text], button{width:100%}
+  input[type=text]{min-width:0}
+  .link-row{flex-direction:column;align-items:stretch}
+  .link-row input{min-width:0;width:100%}
+  .list{grid-template-columns:1fr}
+  .save-bar{padding:.66rem .72rem calc(.66rem + env(safe-area-inset-bottom,0px));align-items:stretch}
+  .save-bar__label{font-size:.8rem}
+  .save-bar__btn{width:100%;text-align:center}
+}
 </style>
 </head>
 <body>
@@ -1212,7 +1361,7 @@ button{border:none;border-radius:8px;padding:.55rem .85rem;cursor:pointer;font-w
       <input type="file" id="carouselFile" accept="image/png,image/jpeg,image/webp">
       <button class="btn-primary" id="addCarouselBtn">Upload to Carousel</button>
     </div>
-    <p class="hint">Uploaded images are appended. Existing homepage slides will use these managed images first.</p>
+    <p class="hint">Uploaded images are appended and indexed. Max upload size: ${Math.floor(SITE_MEDIA_MAX_SIZE / (1024 * 1024))} MB each.</p>
     <div class="list" id="carouselList"></div>
   </div>
 
@@ -1222,28 +1371,49 @@ button{border:none;border-radius:8px;padding:.55rem .85rem;cursor:pointer;font-w
       <input type="file" id="galleryFile" accept="image/png,image/jpeg,image/webp">
       <button class="btn-primary" id="addGalleryBtn">Upload to Gallery</button>
     </div>
-    <p class="hint">Gallery page will show these managed images when available.</p>
+    <p class="hint">Gallery page will show these managed images when available. Max upload size: ${Math.floor(SITE_MEDIA_MAX_SIZE / (1024 * 1024))} MB each.</p>
     <div class="list" id="galleryList"></div>
   </div>
 
   <div class="card">
     <h2>Admission Popup</h2>
-    <div class="row" style="margin-bottom:.6rem;">
-      <label style="display:flex;align-items:center;gap:.45rem;">
-        <input type="checkbox" id="popupEnabled">
-        <span>Enable popup for visitors</span>
-      </label>
-      <input type="text" id="popupLink" placeholder="Popup click link (e.g. /pages/admission.html)">
-      <button class="btn-muted" id="savePopupBtn">Save Popup Settings</button>
+
+    <div class="popup-settings">
+      <div class="popup-settings__title">⚙ Popup Settings</div>
+
+      <div class="popup-toggle-row">
+        <label class="toggle-switch" for="popupEnabled">
+          <input type="checkbox" id="popupEnabled">
+          <span class="toggle-slider"></span>
+        </label>
+        <label class="toggle-label" for="popupEnabled">Show popup to visitors</label>
+        <span class="toggle-badge toggle-badge--off" id="popupBadge">Off</span>
+      </div>
+
+      <div class="link-row">
+        <label for="popupLink">When clicked, go to:</label>
+        <input type="text" id="popupLink" placeholder="/pages/admission.html">
+      </div>
+
+      <div class="popup-upload-row">
+        <div class="row-label">🖼 Popup Image</div>
+        <div class="row">
+          <input type="file" id="popupFile" accept="image/png,image/jpeg,image/webp">
+          <button class="btn-primary" id="uploadPopupBtn">Upload Image</button>
+        </div>
+        <p class="hint">Accepted: JPG, PNG, WEBP · Max 30 MB · Only one active popup image is shown</p>
+      </div>
     </div>
-    <div class="row">
-      <input type="file" id="popupFile" accept="image/png,image/jpeg,image/webp">
-      <button class="btn-primary" id="uploadPopupBtn">Upload Popup Image</button>
-    </div>
+
     <div class="list" id="popupList"></div>
   </div>
   <p class="status" id="statusText"></p>
 </main>
+
+<div class="save-bar">
+  <span class="save-bar__label">Popup toggle and link changes need saving</span>
+  <button class="save-bar__btn" id="savePageBtn">Save Page Settings</button>
+</div>
 
 <script>
 let config = { carousel: [], gallery: [], popup: { enabled: false, image: '', link: '/pages/admission.html', alt: 'Admission update' } };
@@ -1272,9 +1442,13 @@ function renderList(targetId, items, type) {
     return;
   }
 
-  el.innerHTML = items.map((p) => {
+  el.innerHTML = items.map((p, idx) => {
     return '<div class="item">'
       + '<img class="thumb" src="' + p + '" alt="' + fileNameFromPath(p).replace(/"/g, '&quot;') + '">' 
+      + '<div class="meta">'
+      + '<span class="index">#' + (idx + 1) + '</span>'
+      + '<span class="filename" title="' + fileNameFromPath(p).replace(/"/g, '&quot;') + '">' + fileNameFromPath(p) + '</span>'
+      + '</div>'
       + '<div class="actions">'
       + '<button class="btn-danger" data-type="' + type + '" data-path="' + p + '">Delete</button>'
       + '</div>'
@@ -1298,8 +1472,19 @@ function renderList(targetId, items, type) {
   });
 }
 
+function updateToggleBadge(checked) {
+  const badge = document.getElementById('popupBadge');
+  if (!badge) return;
+  badge.textContent = checked ? 'On' : 'Off';
+  badge.className = 'toggle-badge ' + (checked ? 'toggle-badge--on' : 'toggle-badge--off');
+}
+
 function renderPopup() {
-  document.getElementById('popupEnabled').checked = !!(config.popup && config.popup.enabled);
+  const enabled = !!(config.popup && config.popup.enabled);
+  const cb = document.getElementById('popupEnabled');
+  cb.checked = enabled;
+  updateToggleBadge(enabled);
+  cb.addEventListener('change', () => updateToggleBadge(cb.checked));
   document.getElementById('popupLink').value = (config.popup && config.popup.link) || '/pages/admission.html';
   const list = config.popup && config.popup.image ? [config.popup.image] : [];
   renderList('popupList', list, 'popup');
@@ -1335,7 +1520,8 @@ document.getElementById('addCarouselBtn').addEventListener('click', () => upload
 document.getElementById('addGalleryBtn').addEventListener('click', () => uploadByType('gallery', 'galleryFile'));
 document.getElementById('uploadPopupBtn').addEventListener('click', () => uploadByType('popup', 'popupFile'));
 
-document.getElementById('savePopupBtn').addEventListener('click', async () => {
+document.getElementById('savePageBtn').addEventListener('click', async (e) => {
+  e.currentTarget.blur();
   try {
     await api('/admin/api/site-content/popup', {
       method: 'PUT',
@@ -1347,7 +1533,7 @@ document.getElementById('savePopupBtn').addEventListener('click', async () => {
       }),
     });
     await loadConfig();
-    setStatus('Popup settings saved.', false);
+    setStatus('Settings saved.', false);
   } catch (err) {
     setStatus(err.message, true);
   }

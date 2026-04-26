@@ -11,7 +11,79 @@ document.addEventListener('DOMContentLoaded', () => {
   initCounters();
   initLightbox();
   initManagedSiteContent();
+  initWhatsAppWidget();
 });
+
+function initWhatsAppWidget() {
+  const businessNumber = window.ELIMS_WHATSAPP_NUMBER || '918075765602';
+  if (!businessNumber) return;
+
+  const wrapper = document.createElement('div');
+  wrapper.className = 'wa-widget';
+  wrapper.innerHTML = ''
+    + '<button type="button" class="wa-widget__fab" aria-label="Open WhatsApp support">WhatsApp</button>'
+    + '<div class="wa-widget__panel" aria-hidden="true">'
+    + '<div class="wa-widget__head">'
+    + '<strong>WhatsApp Business Help</strong>'
+    + '<button type="button" class="wa-widget__close" aria-label="Close">x</button>'
+    + '</div>'
+    + '<p class="wa-widget__text">Select a course and action. We will continue in WhatsApp.</p>'
+    + '<select class="wa-widget__select" id="waCourseSelect">'
+    + '<option value="B.Pharm">B.Pharm</option>'
+    + '<option value="B.Pharm Lateral Entry">B.Pharm Lateral Entry</option>'
+    + '<option value="Pharm.D">Pharm.D</option>'
+    + '<option value="Pharm.D (PB)">Pharm.D (PB)</option>'
+    + '<option value="M.Pharm Pharmaceutics">M.Pharm Pharmaceutics</option>'
+    + '<option value="M.Pharm Pharmacy Practice">M.Pharm Pharmacy Practice</option>'
+    + '</select>'
+    + '<div class="wa-widget__actions">'
+    + '<button type="button" class="wa-widget__btn" data-action="details">Get Course Details</button>'
+    + '<button type="button" class="wa-widget__btn" data-action="callback">Arrange Follow-up Call</button>'
+    + '<button type="button" class="wa-widget__btn wa-widget__btn--muted" data-action="general">General Admission Query</button>'
+    + '</div>'
+    + '</div>';
+
+  const fab = wrapper.querySelector('.wa-widget__fab');
+  const panel = wrapper.querySelector('.wa-widget__panel');
+  const closeBtn = wrapper.querySelector('.wa-widget__close');
+  const select = wrapper.querySelector('#waCourseSelect');
+
+  function openPanel() {
+    panel.classList.add('is-open');
+    panel.setAttribute('aria-hidden', 'false');
+  }
+
+  function closePanel() {
+    panel.classList.remove('is-open');
+    panel.setAttribute('aria-hidden', 'true');
+  }
+
+  function launchWhatsApp(action) {
+    const course = select ? select.value : 'Admissions';
+    const page = window.location.pathname || '/';
+    let msg = 'Hi ELIMS team, I need admission support.';
+
+    if (action === 'details') {
+      msg = 'Hi ELIMS team, I would like course details for ' + course + '.';
+    } else if (action === 'callback') {
+      msg = 'Hi ELIMS team, please arrange a follow-up call for ' + course + ' admissions.';
+    } else if (action === 'general') {
+      msg = 'Hi ELIMS team, I have a general admission enquiry.';
+    }
+
+    msg += ' (From page: ' + page + ')';
+    const waUrl = 'https://wa.me/' + encodeURIComponent(businessNumber) + '?text=' + encodeURIComponent(msg);
+    window.open(waUrl, '_blank', 'noopener,noreferrer');
+  }
+
+  fab.addEventListener('click', openPanel);
+  closeBtn.addEventListener('click', closePanel);
+  panel.querySelectorAll('.wa-widget__btn').forEach((btn) => {
+    btn.addEventListener('click', () => launchWhatsApp(btn.dataset.action));
+  });
+
+  document.body.appendChild(wrapper);
+}
 
 async function initManagedSiteContent() {
   try {
@@ -60,8 +132,10 @@ function showAdmissionPopup(config) {
   const popup = config && config.popup ? config.popup : null;
   if (!popup || !popup.enabled || !popup.image) return;
 
-  const seenKey = 'elims_admission_popup_seen';
+  // Show only once per session
+  const seenKey = 'elims_popup_seen';
   if (sessionStorage.getItem(seenKey) === '1') return;
+  sessionStorage.setItem(seenKey, '1');
 
   const wrapper = document.createElement('div');
   wrapper.className = 'admission-popup';
@@ -73,18 +147,10 @@ function showAdmissionPopup(config) {
     + '</a>'
     + '</div>';
 
-  function closePopup() {
-    sessionStorage.setItem(seenKey, '1');
-    wrapper.remove();
-  }
+  function closePopup() { wrapper.remove(); }
 
   wrapper.querySelector('.admission-popup__close').addEventListener('click', closePopup);
   wrapper.querySelector('.admission-popup__backdrop').addEventListener('click', closePopup);
-  wrapper.addEventListener('click', (e) => {
-    if (e.target.classList.contains('admission-popup__link')) {
-      sessionStorage.setItem(seenKey, '1');
-    }
-  });
 
   document.body.appendChild(wrapper);
 }

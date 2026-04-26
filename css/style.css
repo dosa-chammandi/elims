@@ -2523,3 +2523,141 @@ select.appform-input {
   line-height: 1;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .admission-popup__dialog {
+    width: min(94vw, 520px);
+    margin: 7vh auto 0;
+    border-radius: 14px;
+  }
+
+  .admission-popup__link img {
+    max-height: calc(100vh - 150px);
+  }
+
+  .admission-popup__close {
+    width: 42px;
+    height: 42px;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+/* WhatsApp widget */
+.wa-widget {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9998;
+}
+
+.wa-widget__fab {
+  border: none;
+  border-radius: 999px;
+  background: #25d366;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 0.8rem 1rem;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+}
+
+.wa-widget__panel {
+  position: absolute;
+  right: 0;
+  bottom: 56px;
+  width: min(90vw, 320px);
+  background: #fff;
+  border: 1px solid #dbe3ee;
+  border-radius: 12px;
+  padding: 0.85rem;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.wa-widget__panel.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.wa-widget__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  color: #1b2a4a;
+}
+
+.wa-widget__close {
+  border: none;
+  border-radius: 6px;
+  background: #e2e8f0;
+  color: #334155;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+}
+
+.wa-widget__text {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin: 0.55rem 0 0.65rem;
+}
+
+.wa-widget__select {
+  width: 100%;
+  border: 1px solid #cfd8e3;
+  border-radius: 8px;
+  padding: 0.5rem 0.55rem;
+  font-size: 0.84rem;
+  margin-bottom: 0.65rem;
+  background: #fff;
+}
+
+.wa-widget__actions {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.wa-widget__btn {
+  border: none;
+  border-radius: 8px;
+  background: #1b2a4a;
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.52rem 0.6rem;
+  cursor: pointer;
+}
+
+.wa-widget__btn--muted {
+  background: #475569;
+}
+
+@media (max-width: 768px) {
+  .wa-widget {
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .wa-widget__fab {
+    font-size: 0.85rem;
+    padding: 0.8rem 0.95rem;
+    min-height: 44px;
+  }
+
+  .wa-widget__panel {
+    width: min(94vw, 340px);
+    bottom: 60px;
+  }
+
+  .wa-widget__btn,
+  .wa-widget__close {
+    min-height: 40px;
+  }
+}
