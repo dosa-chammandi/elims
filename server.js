@@ -315,6 +315,24 @@ function isManagedMediaPath(relPath) {
 }
 
 /**
+ * Move a file across filesystems safely.
+ * Falls back to copy+unlink when rename fails with EXDEV (e.g. on Render
+ * where the tmp dir and persistent disk are on different filesystems).
+ */
+function moveFileSafe(src, dest) {
+  try {
+    fs.renameSync(src, dest);
+  } catch (err) {
+    if (err && err.code === 'EXDEV') {
+      fs.copyFileSync(src, dest);
+      fs.unlinkSync(src);
+      return;
+    }
+    throw err;
+  }
+}
+
+/**
  * Validate MIME, move file from tmp → destDir with a safe name.
  * Returns the saved filename or null.
  */
@@ -327,7 +345,7 @@ function saveUpload(file, destDir, fieldName) {
   const ext      = mimeToExt(mime);
   const safeName = `${fieldName}_${crypto.randomBytes(6).toString('hex')}.${ext}`;
   const dest     = path.join(destDir, safeName);
-  fs.renameSync(file.path, dest);
+  moveFileSafe(file.path, dest);
   return safeName;
 }
 
@@ -635,7 +653,7 @@ app.post('/admin/api/site-media/upload', requireAdmin, (req, res) => {
     const ext = mimeToExt(mime);
     const safeName = `${Date.now()}_${crypto.randomBytes(6).toString('hex')}.${ext}`;
     const dest = path.join(SITE_MEDIA_DIRS[type], safeName);
-    fs.renameSync(req.file.path, dest);
+    moveFileSafe(req.file.path, dest);
     const publicPath = toPublicPath(dest);
 
     const config = loadSiteContent();
